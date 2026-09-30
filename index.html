@@ -2002,4 +2002,151 @@ res.error
 
 ? "Login successful."
 
-  
+  : "Login successful.";
+
+if(!res.error){
+
+setTimeout(
+closeAuth,
+700
+);
+
+updateAccount(
+res.data.session?.user ||
+res.data.user
+);
+
+}
+
+}
+
+
+/* ==================================
+   ACCOUNT
+================================== */
+
+function updateAccount(user){
+
+const button =
+document.getElementById(
+"accountBtn"
+);
+
+const text =
+document.getElementById(
+"logoutText"
+);
+
+if(user){
+
+button.textContent =
+"Account";
+
+text.textContent =
+"Sign out";
+
+}else{
+
+button.textContent =
+"Login";
+
+text.textContent =
+"Login required";
+
+}
+
+}
+
+
+/* ==================================
+   LOGOUT
+================================== */
+
+async function logout(){
+
+if(supabaseClient){
+
+await supabaseClient.auth.signOut();
+
+}
+
+updateAccount(null);
+
+}
+
+
+/* ==================================
+   AUTH SESSION
+================================== */
+
+async function initAuth(){
+
+if(!supabaseClient){
+
+updateAccount(null);
+
+return;
+
+}
+
+const {data} =
+await supabaseClient.auth.getSession();
+
+updateAccount(
+data.session?.user || null
+);
+
+supabaseClient.auth.onAuthStateChange(
+(_event,session)=>{
+
+updateAccount(
+session?.user || null
+);
+
+}
+);
+
+}
+
+
+/* ==================================
+   SECURITY HELPERS
+================================== */
+
+function escapeHTML(value){
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function escapeAttribute(value){
+
+return String(value ?? "")
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'")
+.replace(/"/g,"&quot;")
+.replace(/\n/g," ")
+.replace(/\r/g," ");
+
+}
+
+
+/* ==================================
+   START APP
+================================== */
+
+loadLiveMatches();
+
+initAuth();
+
+</script>
+
+</body>
+
+</html>
