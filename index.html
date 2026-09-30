@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoalStream Live</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f6f8;
+      color: #111827;
+      padding-bottom: 75px;
+    }
+
+    header {
+      background: #d90429;
+      color: white;
+      padding: 22px 18px;
+      border-radius: 0 0 22px 22px;
+    }
+
+    header h1 {
+      font-size: 25px;
+      margin-bottom: 7px;
+    }
+
+    header p {
+      opacity: .9;
+      font-size: 14px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      padding: 18px;
+    }
+
+    .tab {
+      border: none;
+      padding: 11px 18px;
+      border-radius: 20px;
+      background: #e5e7eb;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: #d90429;
+      color: white;
+    }
+
+    .categories {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 0 18px 18px;
+    }
+
+    .category {
+      white-space: nowrap;
+      background: white;
+      border: 1px solid #ddd;
+      padding: 10px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .category.active {
+      background: #111827;
+      color: white;
+    }
+
+    .section {
+      padding: 0 18px;
+      margin-top: 10px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title h2 {
+      font-size: 19px;
+    }
+
+    .match-card,
+    .channel-card,
+    .settings-card {
+      background: white;
+      border-radius: 17px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.06);
+    }
+
+    .live-label {
+      display: inline-block;
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .league {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+
+    .teams {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+
+    .team {
+      flex: 1;
+      font-weight: bold;
+    }
+
+    .score {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .watch-btn {
+      width: 100%;
+      border: none;
+      background: #d90429;
+      color: white;
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .watch-btn:hover {
+      background: #b90322;
+    }
+
+    .channel-info {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .channel-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: #111827;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .channel-name {
+      font-weight: bold;
+    }
+
+    .quality {
+      font-size: 11px;
+      color: #16a34a;
+      margin-top: 4px;
+    }
+
+    .settings-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .settings-card span {
+      color: #6b7280;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65px;
+      background: white;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .nav-item {
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+      cursor: pointer;
+    }
+
+    .nav-item.active {
+      color: #d90429;
+      font-weight: bold;
+    }
+
+    .nav-icon {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .notice {
+      margin: 18px;
+      padding: 13px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #9a3412;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>⚽ GoalStream Live</h1>
+    <p>Live Matches • Live TV • Sports</p>
+  </header>
+
+  <!-- Main -->
+  <main id="home">
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('live', this)">
+        🔴 Live Events
+      </button>
+
+      <button class="tab" onclick="showTab('fixtures', this)">
+        📅 Fixtures
+      </button>
+    </div>
+
+    <div class="categories">
+      <div class="category active">⚽ Football</div>
+      <div class="category">🏀 Basketball</div>
+      <div class="category">🎾 Tennis</div>
+      <div class="category">🏏 Cricket</div>
+      <div class="category">🏆 Other</div>
+    </div>
+
+    <!-- Live Events -->
+    <section id="live">
+
+      <div class="section">
+        <div class="section-title">
+          <h2>Live Matches</h2>
+          <span>View all</span>
+        </div>
+
+        <div class="match-card">
+          <span class="live-label">● LIVE</span>
+          <div class="league">UEFA Champions League</div>
+
+          <div class="teams">
+            <div class="team">
+              Manchester City
+            </div>
+
+            <div>
+              <div class="score">2 - 1</div>
+              <small>68'</small>
+            </div>
+
+            <div class="team">
+              Real Madrid
+            </div>
+          </div>
+
+          <button class="watch-btn" onclick="watchLive()">
+            ▶ Watch Live
+          </button>
+        </div>
+
+        <div class="match-card">
+          <span class="live-label">● LIVE</span>
+          <div class="league">English Premier League</div>
+
+          <div class="teams">
+            <div class="team">
+              Arsenal
+            </div>
+
+            <div>
+              <div class="score">1 - 1</div>
+              <small>52'</small>
+            </div>
+
+            <div class="team">
+              Liverpool
+            </div>
+          </div>
+
+          <button class="watch-btn" onclick="watchLive()">
+            ▶ Watch Live
+          </button>
+        </div>
+
+        <div class="match-card">
+          <span class="live-label">● LIVE</span>
+          <div class="league">La Liga</div>
+
+          <div class="teams">
+            <div class="team">
+              Barcelona
+            </div>
+
+            <div>
+              <div class="score">0 - 0</div>
+              <small>31'</small>
+            </div>
+
+            <div class="team">
+              Atletico Madrid
+            </div>
+          </div>
+
+          <button class="watch-btn" onclick="watchLive()">
+            ▶ Watch Live
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Fixtures -->
+    <section id="fixtures" class="hidden">
+
+      <div class="section">
+        <div class="section-title">
+          <h2>Upcoming Fixtures</h2>
+        </div>
+
+        <div class="match-card">
+          <div class="league">Serie A • Tomorrow</div>
+
+          <div class="teams">
+            <div class="team">Inter Milan</div>
+            <div class="score">20:00</div>
+            <div class="team">AC Milan</div>
+          </div>
+
+          <button class="watch-btn" onclick="watchLive()">
+            🔔 Set Reminder
+          </button>
+        </div>
+
+        <div class="match-card">
+          <div class="league">Premier League • Tomorrow</div>
+
+          <div class="teams">
+            <div class="team">Chelsea</div>
+            <div class="score">18:30</div>
+            <div class="team">Manchester United</div>
+          </div>
+
+          <button class="watch-btn" onclick="watchLive()">
+            🔔 Set Reminder
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="notice">
+      ⚠️ Demo interface. Only use sports streams and channels that you
+      have permission or a licence to distribute.
+    </div>
+
+  </main>
+
+  <!-- Live TV -->
+  <section id="tv" class="hidden">
+
+    <div class="section">
+
+      <div class="section-title">
+        <h2>📺 Live TV</h2>
+      </div>
+
+      <div class="channel-card">
+        <div class="channel-info">
+          <div class="channel-logo">HD</div>
+          <div>
+            <div class="channel-name">Sports HD</div>
+            <div class="quality">● Online • HD</div>
+          </div>
+        </div>
+
+        <button class="watch-btn" onclick="watchLive()">
+          ▶ Watch Channel
+        </button>
+      </div>
+
+      <div class="channel-card">
+        <div class="channel-info">
+          <div class="channel-logo">SD</div>
+          <div>
+            <div class="channel-name">Sports SD</div>
+            <div class="quality">● Online • SD</div>
+          </div>
+        </div>
+
+        <button class="watch-btn" onclick="watchLive()">
+          ▶ Watch Channel
+        </button>
+      </div>
+
+      <div class="channel-card">
+        <div class="channel-info">
+          <div class="channel-logo">AR</div>
+          <div>
+            <div class="channel-name">Arabic Sports</div>
+            <div class="quality">● Online</div>
+          </div>
+        </div>
+
+        <button class="watch-btn" onclick="watchLive()">
+          ▶ Watch Channel
+        </button>
+      </div>
+
+      <div class="channel-card">
+        <div class="channel-info">
+          <div class="channel-logo">FR</div>
+          <div>
+            <div class="channel-name">French Sports</div>
+            <div class="quality">● Online</div>
+          </div>
+        </div>
+
+        <button class="watch-btn" onclick="watchLive()">
+          ▶ Watch Channel
+        </button>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Settings -->
+  <section id="settings" class="hidden">
+
+    <div class="section">
+
+      <div class="section-title">
+        <h2>⚙️ Settings</h2>
+      </div>
+
+      <div class="settings-card">
+        <strong>❤️ Favorites</strong>
+        <span>›</span>
+      </div>
+
+      <div class="settings-card">
+        <strong>🔔 Notifications</strong>
+        <span>›</span>
+      </div>
+
+      <div class="settings-card">
+        <strong>🌐 Language</strong>
+        <span>English ›</span>
+      </div>
+
+      <div class="settings-card" onclick="toggleDarkMode()">
+        <strong>🌙 Dark Mode</strong>
+        <span>Tap to switch</span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+
+    <div class="nav-item active" onclick="openPage('home', this)">
+      <span class="nav-icon">🏠</span>
+      Home
+    </div>
+
+    <div class="nav-item" onclick="openPage('tv', this)">
+      <span class="nav-icon">📺</span>
+      Live TV
+    </div>
+
+    <div class="nav-item" onclick="openPage('settings', this)">
+      <span class="nav-icon">⚙️</span>
+      Settings
+    </div>
+
+  </nav>
+
+  <script>
+
+    const monetagLink = "https://omg10.com/4/11775853";
+
+    function watchLive() {
+      window.open(monetagLink, "_blank");
+    }
+
+    function showTab(tab, button) {
+
+      document.getElementById("live").classList.add("hidden");
+      document.getElementById("fixtures").classList.add("hidden");
+
+      document.getElementById(tab).classList.remove("hidden");
+
+      document.querySelectorAll(".tab").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      button.classList.add("active");
+    }
+
+    function openPage(page, item) {
+
+      document.getElementById("home").classList.add("hidden");
+      document.getElementById("tv").classList.add("hidden");
+      document.getElementById("settings").classList.add("hidden");
+
+      document.getElementById(page).classList.remove("hidden");
+
+      document.querySelectorAll(".nav-item").forEach(nav => {
+        nav.classList.remove("active");
+      });
+
+      item.classList.add("active");
+    }
+
+    function toggleDarkMode() {
+
+      document.body.style.background =
+        document.body.style.background === "rgb(17, 24, 39)"
+        ? "#f5f6f8"
+        : "#111827";
+
+      document.body.style.color =
+        document.body.style.color === "white"
+        ? "#111827"
+        : "white";
+    }
+
+  </script>
+
+</body>
+</html>
