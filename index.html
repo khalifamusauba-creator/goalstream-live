@@ -1,577 +1,1223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GoalStream Live</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e11d48">
+<title>GoalStream Live</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    body {
-      background: #f5f6f8;
-      color: #111827;
-      padding-bottom: 75px;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif
+}
 
-    header {
-      background: #d90429;
-      color: white;
-      padding: 22px 18px;
-      border-radius: 0 0 22px 22px;
-    }
+body{
+  background:#f4f7fb;
+  color:#111827;
+  padding-bottom:80px
+}
 
-    header h1 {
-      font-size: 25px;
-      margin-bottom: 7px;
-    }
+button{
+  font:inherit;
+  cursor:pointer
+}
 
-    header p {
-      opacity: .9;
-      font-size: 14px;
-    }
+header{
+  background:linear-gradient(135deg,#9f1239,#e11d48,#fb7185);
+  color:white;
+  padding:22px 18px 26px;
+  border-radius:0 0 26px 26px;
+  box-shadow:0 8px 25px #0002
+}
 
-    .tabs {
-      display: flex;
-      gap: 10px;
-      padding: 18px;
-    }
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px
+}
 
-    .tab {
-      border: none;
-      padding: 11px 18px;
-      border-radius: 20px;
-      background: #e5e7eb;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.brand h1{
+  font-size:24px
+}
 
-    .tab.active {
-      background: #d90429;
-      color: white;
-    }
+.brand p{
+  margin-top:5px;
+  font-size:13px;
+  opacity:.9
+}
 
-    .categories {
-      display: flex;
-      overflow-x: auto;
-      gap: 10px;
-      padding: 0 18px 18px;
-    }
+.account{
+  border:1px solid #ffffff55;
+  background:#ffffff22;
+  color:white;
+  border-radius:13px;
+  padding:9px 12px;
+  font-weight:bold
+}
 
-    .category {
-      white-space: nowrap;
-      background: white;
-      border: 1px solid #ddd;
-      padding: 10px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
+.tabs,.categories{
+  display:flex;
+  gap:9px;
+  overflow-x:auto;
+  padding:16px 18px 7px;
+  scrollbar-width:none
+}
 
-    .category.active {
-      background: #111827;
-      color: white;
-    }
+.tabs::-webkit-scrollbar,
+.categories::-webkit-scrollbar{
+  display:none
+}
 
-    .section {
-      padding: 0 18px;
-      margin-top: 10px;
-    }
+.tab,.category{
+  border:0;
+  border-radius:20px;
+  padding:10px 15px;
+  white-space:nowrap;
+  font-weight:bold;
+  background:#e5e7eb;
+  color:#334155
+}
 
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
+.tab.active,.category.active{
+  background:#e11d48;
+  color:white
+}
 
-    .section-title h2 {
-      font-size: 19px;
-    }
+.section{
+  padding:0 18px;
+  margin-top:12px
+}
 
-    .match-card,
-    .channel-card,
-    .settings-card {
-      background: white;
-      border-radius: 17px;
-      padding: 16px;
-      margin-bottom: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.06);
-    }
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:10px 0 13px
+}
 
-    .live-label {
-      display: inline-block;
-      background: #fee2e2;
-      color: #dc2626;
-      padding: 5px 9px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
+.section-title h2{
+  font-size:19px
+}
 
-    .league {
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 10px;
-    }
+.match-card,
+.channel-card,
+.settings-card{
+  background:white;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:13px;
+  box-shadow:0 5px 20px #0000000b;
+  border:1px solid #e8edf3
+}
 
-    .teams {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      text-align: center;
-      gap: 10px;
-    }
+.live-label{
+  display:inline-block;
+  background:#ffe4e6;
+  color:#be123c;
+  padding:5px 9px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:bold;
+  margin-bottom:10px
+}
 
-    .team {
-      flex: 1;
-      font-weight: bold;
-    }
+.league{
+  font-size:12px;
+  color:#64748b;
+  margin-bottom:12px
+}
 
-    .score {
-      font-size: 22px;
-      font-weight: bold;
-    }
+.teams{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  text-align:center
+}
 
-    .watch-btn {
-      width: 100%;
-      border: none;
-      background: #d90429;
-      color: white;
-      padding: 12px;
-      border-radius: 12px;
-      margin-top: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.team{
+  flex:1;
+  font-weight:bold
+}
 
-    .watch-btn:hover {
-      background: #b90322;
-    }
+.score{
+  font-size:22px;
+  font-weight:900
+}
 
-    .channel-info {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-    }
+.minute{
+  font-size:11px;
+  color:#64748b
+}
 
-    .channel-logo {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      background: #111827;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-    }
+.watch-btn{
+  width:100%;
+  border:0;
+  background:#0b1220;
+  color:white;
+  padding:12px;
+  border-radius:12px;
+  margin-top:15px;
+  font-weight:bold
+}
 
-    .channel-name {
-      font-weight: bold;
-    }
+.watch-btn:hover{
+  background:#1e293b
+}
 
-    .quality {
-      font-size: 11px;
-      color: #16a34a;
-      margin-top: 4px;
-    }
+.channel-info{
+  display:flex;
+  align-items:center;
+  gap:13px
+}
 
-    .settings-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-    }
+.channel-logo{
+  width:50px;
+  height:50px;
+  border-radius:14px;
+  background:#0b1220;
+  color:white;
+  display:grid;
+  place-items:center;
+  font-weight:900
+}
 
-    .settings-card span {
-      color: #6b7280;
-    }
+.channel-name{
+  font-weight:bold
+}
 
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 65px;
-      background: white;
-      border-top: 1px solid #ddd;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 10;
-    }
+.quality{
+  font-size:11px;
+  color:#16a34a;
+  margin-top:4px
+}
 
-    .nav-item {
-      text-align: center;
-      font-size: 12px;
-      color: #6b7280;
-      cursor: pointer;
-    }
+.bottom-nav{
+  position:fixed;
+  z-index:20;
+  bottom:0;
+  left:0;
+  right:0;
+  height:67px;
+  background:white;
+  border-top:1px solid #e5e7eb;
+  display:flex;
+  justify-content:space-around;
+  align-items:center
+}
 
-    .nav-item.active {
-      color: #d90429;
-      font-weight: bold;
-    }
+.nav-item{
+  text-align:center;
+  font-size:11px;
+  color:#64748b;
+  font-weight:bold
+}
 
-    .nav-icon {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 3px;
-    }
+.nav-item.active{
+  color:#e11d48
+}
 
-    .hidden {
-      display: none;
-    }
+.nav-icon{
+  display:block;
+  font-size:20px;
+  margin-bottom:2px
+}
 
-    .notice {
-      margin: 18px;
-      padding: 13px;
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
-      border-radius: 12px;
-      font-size: 12px;
-      color: #9a3412;
-    }
-  </style>
+.hidden{
+  display:none!important
+}
+
+.empty{
+  padding:35px 15px;
+  text-align:center;
+  color:#64748b
+}
+
+.notice{
+  margin:18px;
+  padding:13px;
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  border-radius:12px;
+  font-size:12px;
+  color:#9a3412
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#02061799;
+  z-index:50;
+  display:grid;
+  place-items:center;
+  padding:18px
+}
+
+.modal-box{
+  width:min(430px,100%);
+  background:white;
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 20px 60px #0005
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px
+}
+
+.close{
+  border:0;
+  background:#eef2f7;
+  border-radius:10px;
+  padding:7px 10px
+}
+
+.field{
+  margin:10px 0
+}
+
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:bold;
+  color:#475569;
+  margin-bottom:6px
+}
+
+.field input{
+  width:100%;
+  padding:12px;
+  border:1px solid #dbe2ea;
+  border-radius:11px;
+  outline:none
+}
+
+.auth-btn{
+  width:100%;
+  border:0;
+  background:#e11d48;
+  color:white;
+  padding:13px;
+  border-radius:12px;
+  font-weight:bold;
+  margin-top:8px
+}
+
+.switch{
+  border:0;
+  background:none;
+  color:#e11d48;
+  font-weight:bold;
+  margin-top:13px;
+  width:100%
+}
+
+.status{
+  font-size:12px;
+  margin-top:10px;
+  color:#64748b;
+  text-align:center
+}
+
+body.dark{
+  background:#07101f;
+  color:#f8fafc
+}
+
+body.dark .bottom-nav{
+  background:#0d1728;
+  border-color:#223047
+}
+
+body.dark .tab,
+body.dark .category{
+  background:#1b293d;
+  color:#dbeafe
+}
+
+body.dark .match-card,
+body.dark .channel-card,
+body.dark .settings-card{
+  background:#101b2d;
+  border-color:#223047
+}
+
+body.dark .modal-box{
+  background:#101b2d;
+  color:white
+}
+
+body.dark .field input{
+  background:#0b1424;
+  color:white;
+  border-color:#2a3a52
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>⚽ GoalStream Live</h1>
-    <p>Live Matches • Live TV • Sports</p>
-  </header>
-
-  <!-- Main -->
-  <main id="home">
-
-    <div class="tabs">
-      <button class="tab active" onclick="showTab('live', this)">
-        🔴 Live Events
-      </button>
-
-      <button class="tab" onclick="showTab('fixtures', this)">
-        📅 Fixtures
-      </button>
-    </div>
-
-    <div class="categories">
-      <div class="category active">⚽ Football</div>
-      <div class="category">🏀 Basketball</div>
-      <div class="category">🎾 Tennis</div>
-      <div class="category">🏏 Cricket</div>
-      <div class="category">🏆 Other</div>
-    </div>
-
-    <!-- Live Events -->
-    <section id="live">
-
-      <div class="section">
-        <div class="section-title">
-          <h2>Live Matches</h2>
-          <span>View all</span>
-        </div>
-
-        <div class="match-card">
-          <span class="live-label">● LIVE</span>
-          <div class="league">UEFA Champions League</div>
-
-          <div class="teams">
-            <div class="team">
-              Manchester City
-            </div>
-
-            <div>
-              <div class="score">2 - 1</div>
-              <small>68'</small>
-            </div>
-
-            <div class="team">
-              Real Madrid
-            </div>
-          </div>
-
-          <button class="watch-btn" onclick="watchLive()">
-            ▶ Watch Live
-          </button>
-        </div>
-
-        <div class="match-card">
-          <span class="live-label">● LIVE</span>
-          <div class="league">English Premier League</div>
-
-          <div class="teams">
-            <div class="team">
-              Arsenal
-            </div>
-
-            <div>
-              <div class="score">1 - 1</div>
-              <small>52'</small>
-            </div>
-
-            <div class="team">
-              Liverpool
-            </div>
-          </div>
-
-          <button class="watch-btn" onclick="watchLive()">
-            ▶ Watch Live
-          </button>
-        </div>
-
-        <div class="match-card">
-          <span class="live-label">● LIVE</span>
-          <div class="league">La Liga</div>
-
-          <div class="teams">
-            <div class="team">
-              Barcelona
-            </div>
-
-            <div>
-              <div class="score">0 - 0</div>
-              <small>31'</small>
-            </div>
-
-            <div class="team">
-              Atletico Madrid
-            </div>
-          </div>
-
-          <button class="watch-btn" onclick="watchLive()">
-            ▶ Watch Live
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Fixtures -->
-    <section id="fixtures" class="hidden">
-
-      <div class="section">
-        <div class="section-title">
-          <h2>Upcoming Fixtures</h2>
-        </div>
-
-        <div class="match-card">
-          <div class="league">Serie A • Tomorrow</div>
-
-          <div class="teams">
-            <div class="team">Inter Milan</div>
-            <div class="score">20:00</div>
-            <div class="team">AC Milan</div>
-          </div>
-
-          <button class="watch-btn" onclick="watchLive()">
-            🔔 Set Reminder
-          </button>
-        </div>
-
-        <div class="match-card">
-          <div class="league">Premier League • Tomorrow</div>
-
-          <div class="teams">
-            <div class="team">Chelsea</div>
-            <div class="score">18:30</div>
-            <div class="team">Manchester United</div>
-          </div>
-
-          <button class="watch-btn" onclick="watchLive()">
-            🔔 Set Reminder
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-    <div class="notice">
-      ⚠️ Demo interface. Only use sports streams and channels that you
-      have permission or a licence to distribute.
-    </div>
-
-  </main>
-
-  <!-- Live TV -->
-  <section id="tv" class="hidden">
-
-    <div class="section">
-
-      <div class="section-title">
-        <h2>📺 Live TV</h2>
-      </div>
-
-      <div class="channel-card">
-        <div class="channel-info">
-          <div class="channel-logo">HD</div>
-          <div>
-            <div class="channel-name">Sports HD</div>
-            <div class="quality">● Online • HD</div>
-          </div>
-        </div>
-
-        <button class="watch-btn" onclick="watchLive()">
-          ▶ Watch Channel
-        </button>
-      </div>
-
-      <div class="channel-card">
-        <div class="channel-info">
-          <div class="channel-logo">SD</div>
-          <div>
-            <div class="channel-name">Sports SD</div>
-            <div class="quality">● Online • SD</div>
-          </div>
-        </div>
-
-        <button class="watch-btn" onclick="watchLive()">
-          ▶ Watch Channel
-        </button>
-      </div>
-
-      <div class="channel-card">
-        <div class="channel-info">
-          <div class="channel-logo">AR</div>
-          <div>
-            <div class="channel-name">Arabic Sports</div>
-            <div class="quality">● Online</div>
-          </div>
-        </div>
-
-        <button class="watch-btn" onclick="watchLive()">
-          ▶ Watch Channel
-        </button>
-      </div>
-
-      <div class="channel-card">
-        <div class="channel-info">
-          <div class="channel-logo">FR</div>
-          <div>
-            <div class="channel-name">French Sports</div>
-            <div class="quality">● Online</div>
-          </div>
-        </div>
+<header>
 
-        <button class="watch-btn" onclick="watchLive()">
-          ▶ Watch Channel
-        </button>
-      </div>
+<div class="top">
 
-    </div>
+<div class="brand">
+<h1>⚽ GoalStream Live</h1>
+<p>Live Matches • Live TV • Sports</p>
+</div>
 
-  </section>
+<button class="account" id="accountBtn" onclick="openAuth()">
+Login
+</button>
 
-  <!-- Settings -->
-  <section id="settings" class="hidden">
-
-    <div class="section">
-
-      <div class="section-title">
-        <h2>⚙️ Settings</h2>
-      </div>
-
-      <div class="settings-card">
-        <strong>❤️ Favorites</strong>
-        <span>›</span>
-      </div>
-
-      <div class="settings-card">
-        <strong>🔔 Notifications</strong>
-        <span>›</span>
-      </div>
-
-      <div class="settings-card">
-        <strong>🌐 Language</strong>
-        <span>English ›</span>
-      </div>
-
-      <div class="settings-card" onclick="toggleDarkMode()">
-        <strong>🌙 Dark Mode</strong>
-        <span>Tap to switch</span>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- Bottom Navigation -->
-  <nav class="bottom-nav">
-
-    <div class="nav-item active" onclick="openPage('home', this)">
-      <span class="nav-icon">🏠</span>
-      Home
-    </div>
-
-    <div class="nav-item" onclick="openPage('tv', this)">
-      <span class="nav-icon">📺</span>
-      Live TV
-    </div>
-
-    <div class="nav-item" onclick="openPage('settings', this)">
-      <span class="nav-icon">⚙️</span>
-      Settings
-    </div>
-
-  </nav>
-
-  <script>
-
-    const monetagLink = "https://omg10.com/4/11775853";
-
-    function watchLive() {
-      window.open(monetagLink, "_blank");
-    }
-
-    function showTab(tab, button) {
-
-      document.getElementById("live").classList.add("hidden");
-      document.getElementById("fixtures").classList.add("hidden");
-
-      document.getElementById(tab).classList.remove("hidden");
-
-      document.querySelectorAll(".tab").forEach(btn => {
-        btn.classList.remove("active");
-      });
-
-      button.classList.add("active");
-    }
-
-    function openPage(page, item) {
-
-      document.getElementById("home").classList.add("hidden");
-      document.getElementById("tv").classList.add("hidden");
-      document.getElementById("settings").classList.add("hidden");
-
-      document.getElementById(page).classList.remove("hidden");
-
-      document.querySelectorAll(".nav-item").forEach(nav => {
-        nav.classList.remove("active");
-      });
-
-      item.classList.add("active");
-    }
-
-    function toggleDarkMode() {
-
-      document.body.style.background =
-        document.body.style.background === "rgb(17, 24, 39)"
-        ? "#f5f6f8"
-        : "#111827";
-
-      document.body.style.color =
-        document.body.style.color === "white"
-        ? "#111827"
-        : "white";
-    }
-
-  </script>
+</div>
+
+</header>
+
+<main id="home">
+
+<div class="tabs">
+
+<button class="tab active" onclick="showTab('live',this)">
+🔴 Live Events
+</button>
+
+<button class="tab" onclick="showTab('fixtures',this)">
+📅 Fixtures
+</button>
+
+</div>
+
+<div class="categories">
+
+<button class="category active"
+onclick="filterCategory('Football',this)">
+⚽ Football
+</button>
+
+<button class="category"
+onclick="filterCategory('Basketball',this)">
+🏀 Basketball
+</button>
+
+<button class="category"
+onclick="filterCategory('Tennis',this)">
+🎾 Tennis
+</button>
+
+<button class="category"
+onclick="filterCategory('Cricket',this)">
+🏏 Cricket
+</button>
+
+</div>
+
+<section id="live">
+
+<div class="section">
+
+<div class="section-title">
+<h2>Live Matches</h2>
+<span id="matchCount">3 live</span>
+</div>
+
+<div id="matches"></div>
+
+</div>
+
+</section>
+
+<section id="fixtures" class="hidden">
+
+<div class="section">
+
+<div class="section-title">
+<h2>Upcoming Fixtures</h2>
+</div>
+
+<div class="match-card">
+
+<div class="league">
+Serie A • Tomorrow
+</div>
+
+<div class="teams">
+
+<div class="team">
+Inter Milan
+</div>
+
+<div class="score">
+20:00
+</div>
+
+<div class="team">
+AC Milan
+</div>
+
+</div>
+
+<button class="watch-btn"
+onclick="reminder('Inter Milan vs AC Milan')">
+🔔 Set Reminder
+</button>
+
+</div>
+
+<div class="match-card">
+
+<div class="league">
+Premier League • Tomorrow
+</div>
+
+<div class="teams">
+
+<div class="team">
+Chelsea
+</div>
+
+<div class="score">
+18:30
+</div>
+
+<div class="team">
+Manchester United
+</div>
+
+</div>
+
+<button class="watch-btn"
+onclick="reminder('Chelsea vs Manchester United')">
+🔔 Set Reminder
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<div class="notice">
+ℹ️ GoalStream only displays streams that you are authorized or licensed to distribute.
+</div>
+
+</main>
+
+<section id="tv" class="hidden">
+
+<div class="section">
+
+<div class="section-title">
+<h2>📺 Live TV</h2>
+</div>
+
+<div class="channel-card">
+
+<div class="channel-info">
+
+<div class="channel-logo">
+HD
+</div>
+
+<div>
+<div class="channel-name">
+Sports HD
+</div>
+
+<div class="quality">
+● Ready for authorized stream
+</div>
+
+</div>
+
+</div>
+
+<button class="watch-btn"
+onclick="openPlayer('Sports HD')">
+▶ Watch Channel
+</button>
+
+</div>
+
+<div class="channel-card">
+
+<div class="channel-info">
+
+<div class="channel-logo">
+SD
+</div>
+
+<div>
+
+<div class="channel-name">
+Sports SD
+</div>
+
+<div class="quality">
+● Ready for authorized stream
+</div>
+
+</div>
+
+</div>
+
+<button class="watch-btn"
+onclick="openPlayer('Sports SD')">
+▶ Watch Channel
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="settings" class="hidden">
+
+<div class="section">
+
+<div class="section-title">
+<h2>⚙️ Settings</h2>
+</div>
+
+<div class="settings-card"
+onclick="toggleDarkMode()">
+
+<strong>🌙 Dark Mode</strong>
+
+<br>
+
+<span>
+Tap to switch
+</span>
+
+</div>
+
+<div class="settings-card"
+onclick="logout()">
+
+<strong>🚪 Logout</strong>
+
+<br>
+
+<span id="logoutText">
+Login required
+</span>
+
+</div>
+
+</div>
+
+</section>
+
+<nav class="bottom-nav">
+
+<div class="nav-item active"
+onclick="openPage('home',this)">
+
+<span class="nav-icon">
+🏠
+</span>
+
+Home
+
+</div>
+
+<div class="nav-item"
+onclick="openPage('tv',this)">
+
+<span class="nav-icon">
+📺
+</span>
+
+Live TV
+
+</div>
+
+<div class="nav-item"
+onclick="openPage('settings',this)">
+
+<span class="nav-icon">
+⚙️
+</span>
+
+Settings
+
+</div>
+
+</nav>
+
+<div id="authModal"
+class="modal hidden">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2 id="authTitle">
+Login
+</h2>
+
+<button class="close"
+onclick="closeAuth()">
+✕
+</button>
+
+</div>
+
+<div class="field">
+
+<label>
+Email
+</label>
+
+<input
+id="email"
+type="email"
+autocomplete="email"
+placeholder="you@example.com">
+
+</div>
+
+<div class="field">
+
+<label>
+Password
+</label>
+
+<input
+id="password"
+type="password"
+autocomplete="current-password"
+placeholder="••••••••">
+
+</div>
+
+<button
+class="auth-btn"
+id="authSubmit"
+onclick="submitAuth()">
+
+Login
+
+</button>
+
+<button
+class="switch"
+id="authSwitch"
+onclick="switchAuth()">
+
+Create an account
+
+</button>
+
+<div
+class="status"
+id="authStatus">
+</div>
+
+</div>
+
+</div>
+
+<div id="playerModal"
+class="modal hidden">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2 id="playerTitle">
+Live Player
+</h2>
+
+<button class="close"
+onclick="closePlayer()">
+✕
+</button>
+
+</div>
+
+<div class="empty">
+
+🎥 No authorized stream has been configured yet.
+
+<br><br>
+
+Add your licensed HLS/MP4 stream URL to the channel configuration before publishing it.
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL =
+"YOUR_SUPABASE_PROJECT_URL";
+
+const SUPABASE_ANON_KEY =
+"YOUR_SUPABASE_ANON_KEY";
+
+const hasSupabase =
+SUPABASE_URL.startsWith("https://") &&
+!SUPABASE_URL.includes("YOUR_") &&
+!SUPABASE_ANON_KEY.includes("YOUR_");
+
+const supabaseClient =
+hasSupabase
+? window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+)
+: null;
+
+const events=[
+
+{
+cat:"Football",
+league:"UEFA Champions League",
+a:"Manchester City",
+b:"Real Madrid",
+score:"2 - 1",
+min:"68'"
+},
+
+{
+cat:"Football",
+league:"English Premier League",
+a:"Arsenal",
+b:"Liverpool",
+score:"1 - 1",
+min:"52'"
+},
+
+{
+cat:"Football",
+league:"La Liga",
+a:"Barcelona",
+b:"Atletico Madrid",
+score:"0 - 0",
+min:"31'"
+},
+
+{
+cat:"Basketball",
+league:"International Basketball",
+a:"Lakers",
+b:"Celtics",
+score:"78 - 74",
+min:"Q3"
+},
+
+{
+cat:"Tennis",
+league:"ATP Tour",
+a:"Player A",
+b:"Player B",
+score:"1 - 1",
+min:"Set 3"
+},
+
+{
+cat:"Cricket",
+league:"T20 Match",
+a:"Team A",
+b:"Team B",
+score:"142/5",
+min:"17.2 ov"
+}
+
+];
+
+let currentCat="Football";
+let authMode="login";
+
+function renderMatches(){
+
+const list =
+events.filter(
+x=>x.cat===currentCat
+);
+
+document.getElementById(
+"matchCount"
+).textContent =
+list.length+" live";
+
+document.getElementById(
+"matches"
+).innerHTML =
+list.length
+
+? list.map(x=>`
+
+<div class="match-card">
+
+<span class="live-label">
+● LIVE
+</span>
+
+<div class="league">
+${x.league}
+</div>
+
+<div class="teams">
+
+<div class="team">
+${x.a}
+</div>
+
+<div>
+
+<div class="score">
+${x.score}
+</div>
+
+<small class="minute">
+${x.min}
+</small>
+
+</div>
+
+<div class="team">
+${x.b}
+</div>
+
+</div>
+
+<button
+class="watch-btn"
+onclick="openPlayer('${x.a} vs ${x.b}')">
+
+▶ Watch Live
+
+</button>
+
+</div>
+
+`).join("")
+
+:`
+
+<div class="empty">
+No live events in this category right now.
+</div>
+
+`;
+
+}
+
+function filterCategory(cat,btn){
+
+currentCat=cat;
+
+document
+.querySelectorAll(".category")
+.forEach(
+x=>x.classList.remove("active")
+);
+
+btn.classList.add("active");
+
+renderMatches();
+
+}
+
+function showTab(tab,btn){
+
+["live","fixtures"]
+.forEach(
+x=>document
+.getElementById(x)
+.classList.add("hidden")
+);
+
+document
+.getElementById(tab)
+.classList.remove("hidden");
+
+document
+.querySelectorAll(".tab")
+.forEach(
+x=>x.classList.remove("active")
+);
+
+btn.classList.add("active");
+
+}
+
+function openPage(page,item){
+
+["home","tv","settings"]
+.forEach(
+x=>document
+.getElementById(x)
+.classList.add("hidden")
+);
+
+document
+.getElementById(page)
+.classList.remove("hidden");
+
+document
+.querySelectorAll(".nav-item")
+.forEach(
+x=>x.classList.remove("active")
+);
+
+item.classList.add("active");
+
+}
+
+function openPlayer(name){
+
+document.getElementById(
+"playerTitle"
+).textContent=name;
+
+document.getElementById(
+"playerModal"
+).classList.remove("hidden");
+
+}
+
+function closePlayer(){
+
+document.getElementById(
+"playerModal"
+).classList.add("hidden");
+
+}
+
+function reminder(name){
+
+alert(
+"Reminder saved for "+name
+);
+
+}
+
+function toggleDarkMode(){
+
+document.body.classList.toggle("dark");
+
+}
+
+function openAuth(){
+
+document.getElementById(
+"authModal"
+).classList.remove("hidden");
+
+}
+
+function closeAuth(){
+
+document.getElementById(
+"authModal"
+).classList.add("hidden");
+
+}
+
+function switchAuth(){
+
+authMode =
+authMode==="login"
+? "signup"
+: "login";
+
+document.getElementById(
+"authTitle"
+).textContent =
+authMode==="login"
+? "Login"
+: "Create account";
+
+document.getElementById(
+"authSubmit"
+).textContent =
+authMode==="login"
+? "Login"
+: "Sign up";
+
+document.getElementById(
+"authSwitch"
+).textContent =
+authMode==="login"
+? "Create an account"
+: "Already have an account? Login";
+
+document.getElementById(
+"authStatus"
+).textContent="";
+
+}
+
+async function submitAuth(){
+
+const email =
+document.getElementById(
+"email"
+).value.trim();
+
+const password =
+document.getElementById(
+"password"
+).value;
+
+const status =
+document.getElementById(
+"authStatus"
+);
+
+if(!email || !password){
+
+status.textContent =
+"Enter your email and password.";
+
+return;
+
+}
+
+if(!hasSupabase){
+
+status.textContent =
+"Supabase is not connected yet. Add your Project URL and anon key.";
+
+return;
+
+}
+
+status.textContent =
+"Please wait…";
+
+const res =
+authMode==="login"
+
+? await supabaseClient.auth
+.signInWithPassword({
+email,
+password
+})
+
+: await supabaseClient.auth
+.signUp({
+email,
+password
+});
+
+status.textContent =
+res.error
+? res.error.message
+: authMode==="login"
+? "Login successful."
+: "Account created. Check your email if confirmation is enabled.";
+
+if(!res.error){
+
+setTimeout(
+closeAuth,
+700
+);
+
+updateAccount(
+res.data.session?.user ||
+res.data.user
+);
+
+}
+
+}
+
+async function logout(){
+
+if(supabaseClient){
+
+await supabaseClient.auth.signOut();
+
+}
+
+updateAccount(null);
+
+}
+
+function updateAccount(user){
+
+const button =
+document.getElementById(
+"accountBtn"
+);
+
+const text =
+document.getElementById(
+"logoutText"
+);
+
+if(user){
+
+button.textContent =
+"Account";
+
+text.textContent =
+"Sign out";
+
+}else{
+
+button.textContent =
+"Login";
+
+text.textContent =
+"Login required";
+
+}
+
+}
+
+async function initAuth(){
+
+if(!supabaseClient){
+
+updateAccount(null);
+
+return;
+
+}
+
+const {data} =
+await supabaseClient.auth
+.getSession();
+
+updateAccount(
+data.session?.user || null
+);
+
+supabaseClient.auth
+.onAuthStateChange(
+(_event,session)=>{
+updateAccount(
+session?.user || null
+);
+}
+);
+
+}
+
+renderMatches();
+
+initAuth();
+
+</script>
 
 </body>
-</html>
+  </html>
