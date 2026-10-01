@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -24,18 +25,18 @@
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:Arial,Helvetica,sans-serif
+  font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
   background:#f4f7fb;
   color:#111827;
-  padding-bottom:82px
+  padding-bottom:82px;
 }
 
 button{
   font:inherit;
-  cursor:pointer
+  cursor:pointer;
 }
 
 header{
@@ -48,25 +49,25 @@ header{
   color:white;
   padding:22px 18px 27px;
   border-radius:0 0 28px 28px;
-  box-shadow:0 8px 25px #0002
+  box-shadow:0 8px 25px #0002;
 }
 
 .top{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px
+  gap:12px;
 }
 
 .brand h1{
   font-size:24px;
-  line-height:1.2
+  font-weight:900;
 }
 
 .brand p{
-  margin-top:6px;
+  margin-top:5px;
   font-size:13px;
-  opacity:.92
+  opacity:.9;
 }
 
 .account{
@@ -75,19 +76,19 @@ header{
   color:white;
   border-radius:13px;
   padding:9px 13px;
-  font-weight:bold
+  font-weight:bold;
 }
 
 .tabs{
   display:flex;
   gap:9px;
   overflow-x:auto;
-  padding:16px 18px 7px;
-  scrollbar-width:none
+  padding:17px 18px 8px;
+  scrollbar-width:none;
 }
 
 .tabs::-webkit-scrollbar{
-  display:none
+  display:none;
 }
 
 .tab{
@@ -97,91 +98,87 @@ header{
   white-space:nowrap;
   font-weight:bold;
   background:#e5e7eb;
-  color:#334155
+  color:#334155;
 }
 
 .tab.active{
   background:#e11d48;
-  color:white
+  color:white;
 }
 
 .section{
   padding:0 18px;
-  margin-top:12px
+  margin-top:12px;
 }
 
 .section-title{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin:10px 0 13px
+  margin:12px 0 14px;
 }
 
 .section-title h2{
-  font-size:19px
+  font-size:20px;
+  font-weight:900;
 }
 
-.refresh{
-  border:0;
-  background:#e2e8f0;
-  color:#334155;
-  border-radius:10px;
-  padding:7px 10px;
-  font-size:12px;
-  font-weight:bold
+.count{
+  font-size:13px;
+  color:#64748b;
+  font-weight:bold;
 }
 
-.match-card,
-.channel-card,
-.settings-card{
+.match-card{
   background:white;
-  border-radius:18px;
+  border-radius:19px;
   padding:16px;
-  margin-bottom:13px;
+  margin-bottom:14px;
   box-shadow:0 5px 20px #0000000b;
-  border:1px solid #e8edf3
+  border:1px solid #e8edf3;
 }
 
-.status-label{
+.status-badge{
   display:inline-block;
   background:#ffe4e6;
   color:#be123c;
-  padding:5px 9px;
+  padding:5px 10px;
   border-radius:8px;
   font-size:11px;
-  font-weight:bold;
-  margin-bottom:10px
+  font-weight:900;
+  margin-bottom:10px;
 }
 
 .status-upcoming{
-  background:#f1f5f9;
-  color:#475569
+  background:#eef2ff;
+  color:#4338ca;
 }
 
 .status-finished{
-  background:#e2e8f0;
-  color:#475569
+  background:#f1f5f9;
+  color:#475569;
 }
 
 .league{
   font-size:12px;
   color:#64748b;
-  margin-bottom:13px
+  margin-bottom:14px;
+  line-height:1.4;
 }
 
 .teams{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:9px;
-  text-align:center
+  gap:10px;
+  text-align:center;
 }
 
 .team{
   flex:1;
-  font-weight:bold;
+  font-weight:800;
   line-height:1.35;
-  min-width:0
+  min-width:0;
 }
 
 .team-logo{
@@ -189,26 +186,25 @@ header{
   height:44px;
   object-fit:contain;
   display:block;
-  margin:0 auto 7px
+  margin:0 auto 7px;
+}
+
+.score-area{
+  min-width:72px;
+  text-align:center;
 }
 
 .score{
   font-size:22px;
   font-weight:900;
-  white-space:nowrap
-}
-
-.kickoff{
-  font-size:20px;
-  font-weight:900;
-  white-space:nowrap
+  white-space:nowrap;
 }
 
 .minute{
   display:block;
   font-size:11px;
   color:#64748b;
-  margin-top:4px
+  margin-top:3px;
 }
 
 .watch-btn{
@@ -219,38 +215,85 @@ header{
   padding:12px;
   border-radius:12px;
   margin-top:15px;
-  font-weight:bold
+  font-weight:bold;
 }
 
 .watch-btn:hover{
-  background:#1e293b
+  background:#1e293b;
+}
+
+.reminder-btn{
+  background:#e11d48;
 }
 
 .empty{
-  padding:35px 15px;
+  padding:38px 15px;
   text-align:center;
   color:#64748b;
   background:white;
   border-radius:18px;
   border:1px solid #e8edf3;
-  line-height:1.6
+  line-height:1.5;
 }
 
-.notice{
-  margin:18px;
-  padding:13px;
-  background:#fff7ed;
-  border:1px solid #fed7aa;
-  border-radius:12px;
-  font-size:12px;
-  color:#9a3412;
-  line-height:1.5
+.loading{
+  padding:38px 15px;
+  text-align:center;
+  color:#64748b;
+  background:white;
+  border-radius:18px;
+  border:1px solid #e8edf3;
+}
+
+.bottom-nav{
+  position:fixed;
+  z-index:20;
+  bottom:0;
+  left:0;
+  right:0;
+  height:68px;
+  background:white;
+  border-top:1px solid #e5e7eb;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.nav-item{
+  text-align:center;
+  font-size:11px;
+  color:#64748b;
+  font-weight:bold;
+}
+
+.nav-item.active{
+  color:#e11d48;
+}
+
+.nav-icon{
+  display:block;
+  font-size:20px;
+  margin-bottom:2px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.channel-card,
+.settings-card{
+  background:white;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:13px;
+  box-shadow:0 5px 20px #0000000b;
+  border:1px solid #e8edf3;
 }
 
 .channel-info{
   display:flex;
   align-items:center;
-  gap:13px
+  gap:13px;
 }
 
 .channel-logo{
@@ -261,52 +304,17 @@ header{
   color:white;
   display:grid;
   place-items:center;
-  font-weight:900
+  font-weight:900;
 }
 
 .channel-name{
-  font-weight:bold
+  font-weight:bold;
 }
 
 .quality{
   font-size:11px;
   color:#16a34a;
-  margin-top:4px
-}
-
-.bottom-nav{
-  position:fixed;
-  z-index:20;
-  bottom:0;
-  left:0;
-  right:0;
-  height:67px;
-  background:white;
-  border-top:1px solid #e5e7eb;
-  display:flex;
-  justify-content:space-around;
-  align-items:center
-}
-
-.nav-item{
-  text-align:center;
-  font-size:11px;
-  color:#64748b;
-  font-weight:bold
-}
-
-.nav-item.active{
-  color:#e11d48
-}
-
-.nav-icon{
-  display:block;
-  font-size:20px;
-  margin-bottom:2px
-}
-
-.hidden{
-  display:none!important
+  margin-top:4px;
 }
 
 .modal{
@@ -316,34 +324,33 @@ header{
   z-index:50;
   display:grid;
   place-items:center;
-  padding:18px
+  padding:18px;
 }
 
 .modal-box{
   width:min(430px,100%);
   background:white;
-  color:#111827;
   border-radius:22px;
   padding:22px;
-  box-shadow:0 20px 60px #0005
+  box-shadow:0 20px 60px #0005;
 }
 
 .modal-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:18px
+  margin-bottom:18px;
 }
 
 .close{
   border:0;
   background:#eef2f7;
   border-radius:10px;
-  padding:7px 10px
+  padding:7px 10px;
 }
 
 .field{
-  margin:10px 0
+  margin:10px 0;
 }
 
 .field label{
@@ -351,7 +358,7 @@ header{
   font-size:12px;
   font-weight:bold;
   color:#475569;
-  margin-bottom:6px
+  margin-bottom:6px;
 }
 
 .field input{
@@ -359,7 +366,7 @@ header{
   padding:12px;
   border:1px solid #dbe2ea;
   border-radius:11px;
-  outline:none
+  outline:none;
 }
 
 .auth-btn{
@@ -370,7 +377,7 @@ header{
   padding:13px;
   border-radius:12px;
   font-weight:bold;
-  margin-top:8px
+  margin-top:8px;
 }
 
 .switch{
@@ -379,7 +386,7 @@ header{
   color:#e11d48;
   font-weight:bold;
   margin-top:13px;
-  width:100%
+  width:100%;
 }
 
 .status{
@@ -387,68 +394,47 @@ header{
   margin-top:10px;
   color:#64748b;
   text-align:center;
-  line-height:1.5
-}
-
-.player-message{
-  text-align:center;
-  padding:25px 10px;
-  color:#64748b;
-  line-height:1.6
 }
 
 body.dark{
   background:#07101f;
-  color:#f8fafc
+  color:#f8fafc;
 }
 
 body.dark .bottom-nav{
   background:#0d1728;
-  border-color:#223047
+  border-color:#223047;
 }
 
 body.dark .tab{
   background:#1b293d;
-  color:#dbeafe
-}
-
-body.dark .tab.active{
-  background:#e11d48;
-  color:white
+  color:#dbeafe;
 }
 
 body.dark .match-card,
 body.dark .channel-card,
 body.dark .settings-card,
-body.dark .empty{
+body.dark .empty,
+body.dark .loading{
   background:#101b2d;
-  border-color:#223047
-}
-
-body.dark .refresh{
-  background:#1b293d;
-  color:#dbeafe
+  border-color:#223047;
 }
 
 body.dark .modal-box{
   background:#101b2d;
-  color:white
-}
-
-body.dark .field label{
-  color:#cbd5e1
+  color:white;
 }
 
 body.dark .field input{
   background:#0b1424;
   color:white;
-  border-color:#2a3a52
+  border-color:#2a3a52;
 }
 
 body.dark .league,
 body.dark .minute,
-body.dark .player-message{
-  color:#94a3b8
+body.dark .count{
+  color:#94a3b8;
 }
 
 </style>
@@ -457,16 +443,23 @@ body.dark .player-message{
 
 <body>
 
+
+<!-- ================================
+     HEADER
+================================ -->
+
 <header>
 
 <div class="top">
 
 <div class="brand">
 
-<h1>⚽ GoalStream Live</h1>
+<h1>
+⚽ GoalStream Live
+</h1>
 
 <p>
-Live Football • Fixtures • Results
+Live Football • Fixtures • Scores
 </p>
 
 </div>
@@ -484,7 +477,12 @@ Login
 </header>
 
 
+<!-- ================================
+     HOME
+================================ -->
+
 <main id="home">
+
 
 <div class="tabs">
 
@@ -493,7 +491,7 @@ class="tab active"
 id="liveTab"
 onclick="showTab('live',this)"
 >
-🔴 Live Matches
+🔴 Live
 </button>
 
 <button
@@ -507,39 +505,32 @@ onclick="showTab('fixtures',this)"
 </div>
 
 
-<section
-id="live"
->
+<!-- ================================
+     LIVE
+================================ -->
+
+<section id="live">
 
 <div class="section">
 
 <div class="section-title">
 
 <h2>
-⚽ Live Football
+Live Matches
 </h2>
 
-<div>
-
-<span id="matchCount">
+<span
+class="count"
+id="matchCount"
+>
 Loading...
 </span>
 
-<button
-class="refresh"
-onclick="loadLiveMatches()"
->
-↻
-</button>
-
 </div>
-
-</div>
-
 
 <div id="matches">
 
-<div class="empty">
+<div class="loading">
 ⚽ Loading live football matches...
 </div>
 
@@ -549,6 +540,10 @@ onclick="loadLiveMatches()"
 
 </section>
 
+
+<!-- ================================
+     FIXTURES
+================================ -->
 
 <section
 id="fixtures"
@@ -560,23 +555,22 @@ class="hidden"
 <div class="section-title">
 
 <h2>
-📅 Football Fixtures
+Today's Fixtures
 </h2>
 
-<button
-class="refresh"
-onclick="loadFixtures()"
+<span
+class="count"
+id="fixtureCount"
 >
-↻
-</button>
+Loading...
+</span>
 
 </div>
 
-
 <div id="fixtureList">
 
-<div class="empty">
-📅 Loading today's football fixtures...
+<div class="loading">
+📅 Loading today's fixtures...
 </div>
 
 </div>
@@ -586,14 +580,12 @@ onclick="loadFixtures()"
 </section>
 
 
-<div class="notice">
-
-ℹ️ GoalStream only displays streams that you are authorized or licensed to distribute.
-
-</div>
-
 </main>
 
+
+<!-- ================================
+     LIVE TV
+================================ -->
 
 <section
 id="tv"
@@ -605,7 +597,7 @@ class="hidden"
 <div class="section-title">
 
 <h2>
-📺 Football TV
+📺 Live TV
 </h2>
 
 </div>
@@ -626,13 +618,12 @@ Sports HD
 </div>
 
 <div class="quality">
-● Ready for authorized stream
+● Authorized stream ready
 </div>
 
 </div>
 
 </div>
-
 
 <button
 class="watch-btn"
@@ -659,13 +650,12 @@ Sports SD
 </div>
 
 <div class="quality">
-● Ready for authorized stream
+● Authorized stream ready
 </div>
 
 </div>
 
 </div>
-
 
 <button
 class="watch-btn"
@@ -680,6 +670,10 @@ onclick="openPlayer('Sports SD')"
 
 </section>
 
+
+<!-- ================================
+     SETTINGS
+================================ -->
 
 <section
 id="settings"
@@ -737,7 +731,12 @@ Login required
 </section>
 
 
+<!-- ================================
+     BOTTOM NAV
+================================ -->
+
 <nav class="bottom-nav">
+
 
 <div
 class="nav-item active"
@@ -762,7 +761,7 @@ onclick="openPage('tv',this)"
 📺
 </span>
 
-Football TV
+Live TV
 
 </div>
 
@@ -780,10 +779,13 @@ Settings
 
 </div>
 
+
 </nav>
 
 
-<!-- AUTH -->
+<!-- ================================
+     AUTH MODAL
+================================ -->
 
 <div
 id="authModal"
@@ -869,7 +871,9 @@ id="authStatus"
 </div>
 
 
-<!-- PLAYER -->
+<!-- ================================
+     PLAYER MODAL
+================================ -->
 
 <div
 id="playerModal"
@@ -894,17 +898,13 @@ onclick="closePlayer()"
 </div>
 
 
-<div class="player-message">
+<div class="empty">
 
-🎥 <strong>Authorized stream required</strong>
-
-<br><br>
-
-No licensed HLS/MP4 stream has been configured for this match yet.
+🎥 No authorized stream has been configured yet.
 
 <br><br>
 
-Only add streams that you are authorized to distribute.
+This player is ready for your licensed HLS/MP4 stream.
 
 </div>
 
@@ -915,9 +915,10 @@ Only add streams that you are authorized to distribute.
 
 <script>
 
-/* =====================================
+
+/* ==================================
    SUPABASE
-===================================== */
+================================== */
 
 const SUPABASE_URL =
 "https://yycqmjdlhicdhfgjfiwa.supabase.co";
@@ -927,11 +928,9 @@ const SUPABASE_ANON_KEY =
 "sb_publishable_Qt32N7lLLjtCLKiSnDlE9w_XK1K2xtC";
 
 
-/*
-  IMPORTANT:
-  The API-Football secret key is NOT here.
-  It remains inside Supabase Edge Function Secrets.
-*/
+/* ==================================
+   FOOTBALL EDGE FUNCTION
+================================== */
 
 const FOOTBALL_API =
 "https://yycqmjdlhicdhfgjfiwa.supabase.co/functions/v1/smooth-processor";
@@ -952,20 +951,20 @@ hasSupabase
 : null;
 
 
-/* =====================================
+/* ==================================
    STATE
-===================================== */
+================================== */
 
-let authMode = "login";
+let currentTab =
+"live";
 
-let currentTab = "live";
+let authMode =
+"login";
 
-let footballMatches = [];
 
-
-/* =====================================
-   FOOTBALL STATUS
-===================================== */
+/* ==================================
+   STATUS CODES
+================================== */
 
 const LIVE_STATUSES = [
 "1H",
@@ -984,13 +983,20 @@ const FINISHED_STATUSES = [
 ];
 
 
-/* =====================================
+const UPCOMING_STATUSES = [
+"NS",
+"TBD"
+];
+
+
+/* ==================================
    LOCAL DATE
-===================================== */
+================================== */
 
 function getLocalDate(){
 
-const now = new Date();
+const now =
+new Date();
 
 const year =
 now.getFullYear();
@@ -1010,9 +1016,9 @@ return `${year}-${month}-${day}`;
 }
 
 
-/* =====================================
-   LOAD LIVE FOOTBALL
-===================================== */
+/* ==================================
+   LOAD LIVE MATCHES
+================================== */
 
 async function loadLiveMatches(){
 
@@ -1028,13 +1034,10 @@ document.getElementById(
 
 
 box.innerHTML = `
-<div class="empty">
-⚽ Loading live football matches...
+<div class="loading">
+⚽ Checking live football matches...
 </div>
 `;
-
-count.textContent =
-"Loading...";
 
 
 try{
@@ -1051,7 +1054,8 @@ cache:"no-store"
 if(!response.ok){
 
 throw new Error(
-"Football API request failed"
+"Live API request failed: " +
+response.status
 );
 
 }
@@ -1061,35 +1065,39 @@ const data =
 await response.json();
 
 
-footballMatches =
-Array.isArray(data.response)
+const matches =
+Array.isArray(
+data.response
+)
 ? data.response
 : [];
 
 
-renderLiveMatches();
+renderLiveMatches(
+matches
+);
 
 
 }catch(error){
 
 console.error(
-"Live football error:",
+"Live matches error:",
 error
 );
 
 
 count.textContent =
-"0 live";
+"Unavailable";
 
 
 box.innerHTML = `
 <div class="empty">
 
-⚠️ Unable to load live football.
+⚠️ Live matches could not be loaded.
 
 <br><br>
 
-Please check your connection and try again.
+Please refresh the page.
 
 </div>
 `;
@@ -1099,14 +1107,16 @@ Please check your connection and try again.
 }
 
 
-/* =====================================
+/* ==================================
    RENDER LIVE
-===================================== */
+================================== */
 
-function renderLiveMatches(){
+function renderLiveMatches(
+matches
+){
 
 const list =
-footballMatches.filter(
+matches.filter(
 item =>
 LIVE_STATUSES.includes(
 item?.fixture?.status?.short
@@ -1114,10 +1124,10 @@ item?.fixture?.status?.short
 );
 
 
-const count =
 document.getElementById(
 "matchCount"
-);
+).textContent =
+`${list.length} live`;
 
 
 const box =
@@ -1126,20 +1136,17 @@ document.getElementById(
 );
 
 
-count.textContent =
-`${list.length} live`;
-
-
 if(!list.length){
 
 box.innerHTML = `
 <div class="empty">
 
-⚽ No live football matches right now.
+⚽ No football match is live right now.
 
 <br>
 
-Check Fixtures for upcoming games.
+📅 Open <strong>Fixtures</strong>
+to see today's matches.
 
 </div>
 `;
@@ -1150,16 +1157,18 @@ return;
 
 
 box.innerHTML =
-list.map(
-fixtureCard
-).join("");
+list
+.map(
+createMatchCard
+)
+.join("");
 
 }
 
 
-/* =====================================
-   LOAD FIXTURES
-===================================== */
+/* ==================================
+   LOAD TODAY'S FIXTURES
+================================== */
 
 async function loadFixtures(){
 
@@ -1168,9 +1177,14 @@ document.getElementById(
 "fixtureList"
 );
 
+const count =
+document.getElementById(
+"fixtureCount"
+);
+
 
 box.innerHTML = `
-<div class="empty">
+<div class="loading">
 📅 Loading today's football fixtures...
 </div>
 `;
@@ -1194,7 +1208,8 @@ cache:"no-store"
 if(!response.ok){
 
 throw new Error(
-"Fixtures request failed"
+"Fixture API request failed: " +
+response.status
 );
 
 }
@@ -1205,7 +1220,9 @@ await response.json();
 
 
 const fixtures =
-Array.isArray(data.response)
+Array.isArray(
+data.response
+)
 ? data.response
 : [];
 
@@ -1223,14 +1240,18 @@ error
 );
 
 
+count.textContent =
+"Unavailable";
+
+
 box.innerHTML = `
 <div class="empty">
 
-⚠️ Unable to load football fixtures.
+⚠️ Fixtures could not be loaded.
 
 <br><br>
 
-Please try again.
+Please refresh the page.
 
 </div>
 `;
@@ -1240,9 +1261,9 @@ Please try again.
 }
 
 
-/* =====================================
+/* ==================================
    RENDER FIXTURES
-===================================== */
+================================== */
 
 function renderFixtures(
 fixtures
@@ -1255,12 +1276,19 @@ item => {
 const status =
 item?.fixture?.status?.short;
 
-return !FINISHED_STATUSES.includes(
-status
+
+return (
+!FINISHED_STATUSES.includes(status)
 );
 
 }
 );
+
+
+document.getElementById(
+"fixtureCount"
+).textContent =
+`${list.length} matches`;
 
 
 const box =
@@ -1285,45 +1313,53 @@ return;
 
 
 box.innerHTML =
-list.map(
-fixtureCard
-).join("");
+list
+.map(
+createMatchCard
+)
+.join("");
 
 }
 
 
-/* =====================================
-   MATCH CARD
-===================================== */
+/* ==================================
+   CREATE MATCH CARD
+================================== */
 
-function fixtureCard(
+function createMatchCard(
 item
 ){
 
 const fixture =
 item?.fixture || {};
 
+
 const league =
 item?.league || {};
+
 
 const teams =
 item?.teams || {};
 
+
 const goals =
 item?.goals || {};
+
 
 const status =
 fixture?.status || {};
 
+
 const home =
 teams?.home || {};
+
 
 const away =
 teams?.away || {};
 
 
 const statusCode =
-status.short || "NS";
+status?.short || "NS";
 
 
 const isLive =
@@ -1339,109 +1375,181 @@ statusCode
 
 
 const homeScore =
-goals.home ?? "-";
+goals?.home ?? "-";
 
 
 const awayScore =
-goals.away ?? "-";
+goals?.away ?? "-";
 
 
-const time =
+const kickoff =
 formatTime(
 fixture.date
 );
 
 
-const date =
+const matchDate =
 formatDate(
 fixture.date
 );
 
 
-let statusText =
+let badgeText =
 "UPCOMING";
+
+
+let badgeClass =
+"status-badge status-upcoming";
 
 
 if(isLive){
 
-statusText =
+badgeText =
 statusCode === "HT"
 ? "HALF TIME"
 : "● LIVE";
+
+badgeClass =
+"status-badge";
 
 }
 
 
 if(isFinished){
 
-statusText =
+badgeText =
 "FINISHED";
 
-}
-
-
-let statusClass =
-"status-label";
-
-
-if(!isLive){
-
-statusClass +=
-isFinished
-? " status-finished"
-: " status-upcoming";
+badgeClass =
+"status-badge status-finished";
 
 }
 
 
-const homeName =
-home.name ||
-"Home";
+let middleContent = "";
 
 
-const awayName =
-away.name ||
-"Away";
+if(isLive){
+
+middleContent = `
+
+<div class="score">
+${homeScore} - ${awayScore}
+</div>
+
+<small class="minute">
+
+${
+statusCode === "HT"
+? "Half Time"
+: (
+status.elapsed
+? status.elapsed + "'"
+: "LIVE"
+)
+}
+
+</small>
+
+`;
+
+}else if(isFinished){
+
+middleContent = `
+
+<div class="score">
+${homeScore} - ${awayScore}
+</div>
+
+<small class="minute">
+FT
+</small>
+
+`;
+
+}else{
+
+middleContent = `
+
+<div class="score">
+${kickoff}
+</div>
+
+<small class="minute">
+${matchDate}
+</small>
+
+`;
+
+}
 
 
-const safeHome =
-escapeHTML(
-homeName
-);
+let actionButton = "";
 
 
-const safeAway =
-escapeHTML(
-awayName
-);
+if(isLive){
 
+actionButton = `
 
-const encodedHome =
-encodeURIComponent(
-homeName
-);
+<button
+class="watch-btn"
+onclick="openPlayerByMatch(
+'${escapeJS(home.name)}',
+'${escapeJS(away.name)}'
+)"
+>
+▶ Watch Live
+</button>
 
+`;
 
-const encodedAway =
-encodeURIComponent(
-awayName
-);
+}else if(isFinished){
+
+actionButton = `
+
+<button
+class="watch-btn"
+onclick="openPlayerByMatch(
+'${escapeJS(home.name)}',
+'${escapeJS(away.name)}'
+)"
+>
+📋 View Match
+</button>
+
+`;
+
+}else{
+
+actionButton = `
+
+<button
+class="watch-btn reminder-btn"
+onclick="reminder(
+'${escapeJS(home.name)} vs ${escapeJS(away.name)}'
+)"
+>
+🔔 Set Reminder
+</button>
+
+`;
+
+}
 
 
 return `
 
 <div class="match-card">
 
-<span class="${statusClass}">
-${statusText}
+<span class="${badgeClass}">
+${badgeText}
 </span>
 
 
 <div class="league">
 
 ${escapeHTML(
-league.name ||
-"Football"
+league.name || "Football"
 )}
 
 ${
@@ -1464,81 +1572,29 @@ league.country
 ${
 home.logo
 ? `
+
 <img
 class="team-logo"
 src="${escapeHTML(home.logo)}"
 alt=""
 loading="lazy"
+onerror="this.style.display='none'"
 >
+
 `
 : ""
 }
 
-${safeHome}
+${escapeHTML(
+home.name || "Home"
+)}
 
 </div>
 
 
-<div>
+<div class="score-area">
 
-
-${
-isLive || isFinished
-
-? `
-
-<div class="score">
-
-${homeScore}
--
-${awayScore}
-
-</div>
-
-<small class="minute">
-
-${
-isLive
-
-? (
-statusCode === "HT"
-
-? "Half Time"
-
-: (
-status.elapsed
-? status.elapsed + "'"
-: "LIVE"
-)
-
-)
-
-: "FT"
-
-}
-
-</small>
-
-`
-
-: `
-
-<div class="kickoff">
-
-${time}
-
-</div>
-
-<small class="minute">
-
-${date}
-
-</small>
-
-`
-
-}
-
+${middleContent}
 
 </div>
 
@@ -1548,17 +1604,22 @@ ${date}
 ${
 away.logo
 ? `
+
 <img
 class="team-logo"
 src="${escapeHTML(away.logo)}"
 alt=""
 loading="lazy"
+onerror="this.style.display='none'"
 >
+
 `
 : ""
 }
 
-${safeAway}
+${escapeHTML(
+away.name || "Away"
+)}
 
 </div>
 
@@ -1566,61 +1627,7 @@ ${safeAway}
 </div>
 
 
-${
-isLive
-
-? `
-
-<button
-class="watch-btn"
-data-home="${safeHome}"
-data-away="${safeAway}"
-onclick="openPlayerByEncodedMatch(
-this.dataset.home,
-this.dataset.away
-)"
->
-▶ Watch Live
-</button>
-
-`
-
-: isFinished
-
-? `
-
-<button
-class="watch-btn"
-data-home="${safeHome}"
-data-away="${safeAway}"
-onclick="openPlayerByEncodedMatch(
-this.dataset.home,
-this.dataset.away
-)"
->
-📋 View Match
-</button>
-
-`
-
-: `
-
-<button
-class="watch-btn"
-data-home="${safeHome}"
-data-away="${safeAway}"
-onclick="reminderFromButton(
-this.dataset.home,
-this.dataset.away
-)"
->
-🔔 Set Reminder
-</button>
-
-`
-
-}
-
+${actionButton}
 
 </div>
 
@@ -1629,9 +1636,9 @@ this.dataset.away
 }
 
 
-/* =====================================
-   DATE / TIME
-===================================== */
+/* ==================================
+   FORMAT TIME
+================================== */
 
 function formatTime(
 date
@@ -1656,6 +1663,10 @@ minute:"2-digit"
 }
 
 
+/* ==================================
+   FORMAT DATE
+================================== */
+
 function formatDate(
 date
 ){
@@ -1671,6 +1682,7 @@ return new Date(date)
 .toLocaleDateString(
 [],
 {
+weekday:"short",
 day:"2-digit",
 month:"short"
 }
@@ -1679,9 +1691,9 @@ month:"short"
 }
 
 
-/* =====================================
+/* ==================================
    TABS
-===================================== */
+================================== */
 
 function showTab(
 tab,
@@ -1694,31 +1706,28 @@ tab;
 
 document
 .getElementById("live")
-.classList.toggle(
-"hidden",
-tab !== "live"
-);
+.classList.add("hidden");
 
 
 document
 .getElementById("fixtures")
-.classList.toggle(
-"hidden",
-tab !== "fixtures"
-);
+.classList.add("hidden");
+
+
+document
+.getElementById(tab)
+.classList.remove("hidden");
 
 
 document
 .querySelectorAll(".tab")
 .forEach(
-x =>
-x.classList.remove("active")
+button =>
+button.classList.remove("active")
 );
 
 
-btn.classList.add(
-"active"
-);
+btn.classList.add("active");
 
 
 if(tab === "live"){
@@ -1737,25 +1746,28 @@ loadFixtures();
 }
 
 
-/* =====================================
+/* ==================================
    NAVIGATION
-===================================== */
+================================== */
 
 function openPage(
 page,
 item
 ){
 
-[
-"home",
-"tv",
-"settings"
-].forEach(
-x =>
 document
-.getElementById(x)
-.classList.add("hidden")
-);
+.getElementById("home")
+.classList.add("hidden");
+
+
+document
+.getElementById("tv")
+.classList.add("hidden");
+
+
+document
+.getElementById("settings")
+.classList.add("hidden");
 
 
 document
@@ -1780,9 +1792,7 @@ if(currentTab === "live"){
 
 loadLiveMatches();
 
-}
-
-if(currentTab === "fixtures"){
+}else{
 
 loadFixtures();
 
@@ -1793,9 +1803,9 @@ loadFixtures();
 }
 
 
-/* =====================================
+/* ==================================
    PLAYER
-===================================== */
+================================== */
 
 function openPlayer(
 name
@@ -1809,14 +1819,12 @@ name;
 
 document.getElementById(
 "playerModal"
-).classList.remove(
-"hidden"
-);
+).classList.remove("hidden");
 
 }
 
 
-function openPlayerByEncodedMatch(
+function openPlayerByMatch(
 home,
 away
 ){
@@ -1832,25 +1840,18 @@ function closePlayer(){
 
 document.getElementById(
 "playerModal"
-).classList.add(
-"hidden"
-);
+).classList.add("hidden");
 
 }
 
 
-/* =====================================
+/* ==================================
    REMINDER
-===================================== */
+================================== */
 
-function reminderFromButton(
-home,
-away
+function reminder(
+name
 ){
-
-const name =
-`${home} vs ${away}`;
-
 
 alert(
 "Reminder saved for " +
@@ -1860,23 +1861,21 @@ name
 }
 
 
-/* =====================================
-   DARK MODE
-===================================== */
+  K MODE
+================================== */
 
 function toggleDarkMode(){
 
-document.body
-.classList.toggle(
+document.body.classList.toggle(
 "dark"
 );
 
 }
 
 
-/* =====================================
+/* ==================================
    AUTH
-===================================== */
+================================== */
 
 function openAuth(){
 
@@ -1941,6 +1940,135 @@ document.getElementById(
 
 
 /* ==================================
+   SUBMIT AUTH
+================================== */
+
+async function submitAuth(){
+
+const email =
+document.getElementById(
+"email"
+).value.trim();
+
+
+const password =
+document.getElementById(
+"password"
+).value;
+
+
+const status =
+document.getElementById(
+"authStatus"
+);
+
+
+if(!email || !password){
+
+status.textContent =
+"Enter your email and password.";
+
+return;
+
+}
+
+
+if(!hasSupabase){
+
+status.textContent =
+"Supabase is not connected.";
+
+return;
+
+}
+
+
+status.textContent =
+"Please wait...";
+
+
+try{
+
+let result;
+
+
+if(authMode === "login"){
+
+result =
+await supabaseClient.auth
+.signInWithPassword({
+email:email,
+password:password
+});
+
+}else{
+
+result =
+await supabaseClient.auth
+.signUp({
+email:email,
+password:password
+});
+
+}
+
+
+if(result.error){
+
+status.textContent =
+result.error.message;
+
+return;
+
+}
+
+
+if(authMode === "login"){
+
+status.textContent =
+"Login successful.";
+
+updateAccount(
+result.data.session?.user ||
+result.data.user
+);
+
+}else{
+
+status.textContent =
+"Account created. Check your email if confirmation is enabled.";
+
+updateAccount(
+result.data.session?.user ||
+result.data.user
+);
+
+}
+
+
+setTimeout(
+closeAuth,
+900
+);
+
+
+}catch(error){
+
+console.error(
+"Authentication error:",
+error
+);
+
+
+status.textContent =
+"Authentication failed. Please try again.";
+
+}
+
+}
+
+
+/* ==================================
    UPDATE ACCOUNT
 ================================== */
 
@@ -1951,26 +2079,38 @@ document.getElementById(
 "accountBtn"
 );
 
-const text =
+
+const logoutText =
 document.getElementById(
 "logoutText"
 );
+
 
 if(user){
 
 button.textContent =
 "Account";
 
-text.textContent =
+
+if(logoutText){
+
+logoutText.textContent =
 "Sign out";
+
+}
 
 }else{
 
 button.textContent =
 "Login";
 
-text.textContent =
+
+if(logoutText){
+
+logoutText.textContent =
 "Login required";
+
+}
 
 }
 
@@ -1983,11 +2123,23 @@ text.textContent =
 
 async function logout(){
 
+try{
+
 if(supabaseClient){
 
 await supabaseClient.auth.signOut();
 
 }
+
+}catch(error){
+
+console.error(
+"Logout error:",
+error
+);
+
+}
+
 
 updateAccount(null);
 
@@ -2008,13 +2160,19 @@ return;
 
 }
 
+
 try{
 
-const {data} =
+const sessionResult =
 await supabaseClient.auth.getSession();
 
+
+const session =
+sessionResult.data?.session;
+
+
 updateAccount(
-data.session?.user || null
+session?.user || null
 );
 
 
@@ -2028,12 +2186,14 @@ session?.user || null
 }
 );
 
+
 }catch(error){
 
 console.error(
 "Auth session error:",
 error
 );
+
 
 updateAccount(null);
 
@@ -2048,7 +2208,9 @@ updateAccount(null);
 
 function escapeHTML(value){
 
-return String(value ?? "")
+return String(
+value ?? ""
+)
 .replace(
 /&/g,
 "&amp;"
@@ -2075,7 +2237,9 @@ return String(value ?? "")
 
 function escapeAttribute(value){
 
-return String(value ?? "")
+return String(
+value ?? ""
+)
 .replace(
 /\\/g,
 "\\\\"
@@ -2104,11 +2268,9 @@ return String(value ?? "")
    START APP
 ================================== */
 
-renderLiveMatches();
+loadLiveMatches();
 
 initAuth();
-
-loadLiveMatches();
 
 
 /* ==================================
@@ -2131,9 +2293,7 @@ loadLiveMatches();
 30000
 );
 
-
 </script>
 
 </body>
-
 </html>
