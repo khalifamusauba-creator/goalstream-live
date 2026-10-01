@@ -1,1105 +1,1376 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<meta
-  name="theme-color"
-  content="#e11d48"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>GoalStream Live</title>
+
+<meta name="theme-color" content="#07111f">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:Arial,Helvetica,sans-serif;
+}
+
+:root{
+  --bg:#07111f;
+  --card:#0d1b2d;
+  --card2:#10243a;
+  --text:#ffffff;
+  --muted:#91a1b5;
+  --green:#16d67a;
+  --green2:#0fae62;
+  --red:#ff4d5f;
+  --line:rgba(255,255,255,.08);
+  --shadow:0 15px 40px rgba(0,0,0,.25);
 }
 
 body{
-  background:#f4f7fb;
-  color:#111827;
-  padding-bottom:82px;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
 }
 
 button{
-  font:inherit;
+  font-family:inherit;
   cursor:pointer;
-}
-
-header{
-  background:linear-gradient(
-    135deg,
-    #9f1239,
-    #e11d48,
-    #fb7185
-  );
-  color:white;
-  padding:22px 18px 27px;
-  border-radius:0 0 28px 28px;
-  box-shadow:0 8px 25px #0002;
-}
-
-.top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.brand h1{
-  font-size:24px;
-  font-weight:900;
-}
-
-.brand p{
-  margin-top:5px;
-  font-size:13px;
-  opacity:.9;
-}
-
-.account{
-  border:1px solid #ffffff55;
-  background:#ffffff22;
-  color:white;
-  border-radius:13px;
-  padding:9px 13px;
-  font-weight:bold;
-}
-
-.tabs{
-  display:flex;
-  gap:9px;
-  overflow-x:auto;
-  padding:17px 18px 8px;
-  scrollbar-width:none;
-}
-
-.tabs::-webkit-scrollbar{
-  display:none;
-}
-
-.tab{
-  border:0;
-  border-radius:20px;
-  padding:11px 16px;
-  white-space:nowrap;
-  font-weight:bold;
-  background:#e5e7eb;
-  color:#334155;
-}
-
-.tab.active{
-  background:#e11d48;
-  color:white;
-}
-
-.section{
-  padding:0 18px;
-  margin-top:12px;
-}
-
-.section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:12px 0 14px;
-}
-
-.section-title h2{
-  font-size:20px;
-  font-weight:900;
-}
-
-.count{
-  font-size:13px;
-  color:#64748b;
-  font-weight:bold;
-}
-
-.match-card{
-  background:white;
-  border-radius:19px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 5px 20px #0000000b;
-  border:1px solid #e8edf3;
-}
-
-.status-badge{
-  display:inline-block;
-  background:#ffe4e6;
-  color:#be123c;
-  padding:5px 10px;
-  border-radius:8px;
-  font-size:11px;
-  font-weight:900;
-  margin-bottom:10px;
-}
-
-.status-upcoming{
-  background:#eef2ff;
-  color:#4338ca;
-}
-
-.status-finished{
-  background:#f1f5f9;
-  color:#475569;
-}
-
-.league{
-  font-size:12px;
-  color:#64748b;
-  margin-bottom:14px;
-  line-height:1.4;
-}
-
-.teams{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  text-align:center;
-}
-
-.team{
-  flex:1;
-  font-weight:800;
-  line-height:1.35;
-  min-width:0;
-}
-
-.team-logo{
-  width:44px;
-  height:44px;
-  object-fit:contain;
-  display:block;
-  margin:0 auto 7px;
-}
-
-.score-area{
-  min-width:72px;
-  text-align:center;
-}
-
-.score{
-  font-size:22px;
-  font-weight:900;
-  white-space:nowrap;
-}
-
-.minute{
-  display:block;
-  font-size:11px;
-  color:#64748b;
-  margin-top:3px;
-}
-
-.watch-btn{
-  width:100%;
-  border:0;
-  background:#0b1220;
-  color:white;
-  padding:12px;
-  border-radius:12px;
-  margin-top:15px;
-  font-weight:bold;
-}
-
-.watch-btn:hover{
-  background:#1e293b;
-}
-
-.reminder-btn{
-  background:#e11d48;
-}
-
-.empty{
-  padding:38px 15px;
-  text-align:center;
-  color:#64748b;
-  background:white;
-  border-radius:18px;
-  border:1px solid #e8edf3;
-  line-height:1.5;
-}
-
-.loading{
-  padding:38px 15px;
-  text-align:center;
-  color:#64748b;
-  background:white;
-  border-radius:18px;
-  border:1px solid #e8edf3;
-}
-
-.bottom-nav{
-  position:fixed;
-  z-index:20;
-  bottom:0;
-  left:0;
-  right:0;
-  height:68px;
-  background:white;
-  border-top:1px solid #e5e7eb;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-}
-
-.nav-item{
-  text-align:center;
-  font-size:11px;
-  color:#64748b;
-  font-weight:bold;
-}
-
-.nav-item.active{
-  color:#e11d48;
-}
-
-.nav-icon{
-  display:block;
-  font-size:20px;
-  margin-bottom:2px;
 }
 
 .hidden{
   display:none!important;
 }
 
-.channel-card,
-.settings-card{
-  background:white;
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:13px;
-  box-shadow:0 5px 20px #0000000b;
-  border:1px solid #e8edf3;
+/* HEADER */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(7,17,31,.96);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--line);
 }
 
-.channel-info{
+.header-inner{
+  max-width:1100px;
+  margin:auto;
+  min-height:68px;
+  padding:0 18px;
   display:flex;
   align-items:center;
-  gap:13px;
+  justify-content:space-between;
+  gap:15px;
 }
 
-.channel-logo{
-  width:50px;
-  height:50px;
-  border-radius:14px;
-  background:#0b1220;
-  color:white;
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:21px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.logo-ball{
+  width:38px;
+  height:38px;
+  border-radius:12px;
   display:grid;
   place-items:center;
+  background:linear-gradient(135deg,#16d67a,#078d50);
+  box-shadow:0 8px 25px rgba(22,214,122,.25);
+}
+
+.logo-ball span{
+  font-size:20px;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.icon-btn{
+  width:40px;
+  height:40px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--card);
+  color:white;
+  font-size:18px;
+}
+
+.login-btn{
+  border:0;
+  padding:11px 16px;
+  border-radius:12px;
+  background:var(--green);
+  color:#03150d;
+  font-weight:800;
+}
+
+/* HERO */
+
+.hero{
+  max-width:1100px;
+  margin:auto;
+  padding:28px 18px 12px;
+}
+
+.hero-box{
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:28px 22px;
+  background:
+    radial-gradient(circle at 90% 20%,rgba(22,214,122,.18),transparent 30%),
+    linear-gradient(135deg,#0d1d31,#081321);
+  box-shadow:var(--shadow);
+}
+
+.hero-box h1{
+  font-size:32px;
+  line-height:1.1;
+  margin-bottom:10px;
+}
+
+.hero-box p{
+  color:var(--muted);
+  max-width:620px;
+  line-height:1.6;
+}
+
+.hero-buttons{
+  margin-top:20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.primary-btn,
+.secondary-btn{
+  border-radius:12px;
+  padding:12px 17px;
+  font-weight:800;
+  border:0;
+}
+
+.primary-btn{
+  background:var(--green);
+  color:#03150d;
+}
+
+.secondary-btn{
+  background:rgba(255,255,255,.07);
+  color:white;
+  border:1px solid var(--line);
+}
+
+/* CATEGORIES */
+
+.categories{
+  max-width:1100px;
+  margin:auto;
+  padding:10px 18px;
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.categories::-webkit-scrollbar{
+  display:none;
+}
+
+.category{
+  flex:0 0 auto;
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--muted);
+  padding:10px 15px;
+  border-radius:20px;
+  font-weight:700;
+}
+
+.category.active{
+  color:#03150d;
+  background:var(--green);
+  border-color:var(--green);
+}
+
+/* MAIN */
+
+.main{
+  max-width:1100px;
+  margin:auto;
+  padding:12px 18px 110px;
+}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:20px 0 12px;
+}
+
+.section-head h2{
+  font-size:21px;
+}
+
+.section-head span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.refresh-btn{
+  border:1px solid var(--line);
+  background:var(--card);
+  color:white;
+  padding:8px 12px;
+  border-radius:10px;
+}
+
+/* STATUS */
+
+.status-box{
+  margin:10px 0 16px;
+  padding:13px 15px;
+  border-radius:13px;
+  background:var(--card);
+  border:1px solid var(--line);
+  color:var(--muted);
+  font-size:14px;
+}
+
+.status-box.success{
+  color:#72efb0;
+}
+
+.status-box.error{
+  color:#ff8e9b;
+}
+
+/* MATCH GRID */
+
+.matches{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.match-card{
+  position:relative;
+  background:linear-gradient(145deg,var(--card),#091726);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,.14);
+}
+
+.match-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:15px;
+}
+
+.league{
+  color:var(--muted);
+  font-size:12px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.live-badge{
+  background:rgba(255,77,95,.13);
+  color:#ff7f8b;
+  border:1px solid rgba(255,77,95,.22);
+  border-radius:20px;
+  padding:5px 8px;
+  font-size:10px;
   font-weight:900;
 }
 
-.channel-name{
-  font-weight:bold;
+.time-badge{
+  background:rgba(255,255,255,.06);
+  color:#d9e1ea;
+  border-radius:20px;
+  padding:5px 8px;
+  font-size:10px;
+  font-weight:800;
 }
 
-.quality{
-  font-size:11px;
-  color:#16a34a;
+.teams{
+  display:grid;
+  grid-template-columns:1fr 70px 1fr;
+  align-items:center;
+  gap:8px;
+}
+
+.team{
+  text-align:center;
+}
+
+.team-logo{
+  width:48px;
+  height:48px;
+  margin:auto auto 7px;
+  border-radius:50%;
+  object-fit:contain;
+  background:#fff;
+  padding:5px;
+}
+
+.team-name{
+  font-size:13px;
+  font-weight:700;
+  line-height:1.25;
+}
+
+.score{
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+}
+
+.score small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
   margin-top:4px;
 }
+
+.card-actions{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
+}
+
+.watch-btn{
+  flex:1;
+  border:0;
+  border-radius:10px;
+  padding:10px;
+  background:var(--green);
+  color:#03150d;
+  font-weight:900;
+}
+
+.remind-btn{
+  width:43px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.05);
+  color:white;
+}
+
+/* EMPTY */
+
+.empty{
+  text-align:center;
+  padding:45px 20px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+}
+
+.empty-icon{
+  font-size:38px;
+  margin-bottom:12px;
+}
+
+.empty h3{
+  margin-bottom:7px;
+}
+
+.empty p{
+  color:var(--muted);
+  line-height:1.5;
+  font-size:14px;
+}
+
+/* NAV */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:40;
+  background:rgba(7,17,31,.97);
+  backdrop-filter:blur(15px);
+  border-top:1px solid var(--line);
+}
+
+.nav-inner{
+  max-width:600px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+
+.nav-btn{
+  border:0;
+  background:none;
+  color:var(--muted);
+  padding:10px 5px 9px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.nav-icon{
+  display:block;
+  font-size:19px;
+  margin-bottom:3px;
+}
+
+.nav-btn.active{
+  color:var(--green);
+}
+
+/* MODALS */
 
 .modal{
   position:fixed;
   inset:0;
-  background:#02061799;
-  z-index:50;
-  display:grid;
-  place-items:center;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   padding:18px;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(8px);
 }
 
 .modal-box{
-  width:min(430px,100%);
-  background:white;
+  width:min(500px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#0b1929;
+  border:1px solid var(--line);
   border-radius:22px;
-  padding:22px;
-  box-shadow:0 20px 60px #0005;
+  box-shadow:0 25px 70px rgba(0,0,0,.5);
 }
 
 .modal-head{
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+  padding:18px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-head h3{
+  font-size:18px;
+}
+
+.close-btn{
+  width:36px;
+  height:36px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--card);
+  color:white;
+  font-size:18px;
+}
+
+.modal-body{
+  padding:18px;
+}
+
+/* AUTH */
+
+.auth-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  background:var(--card);
+  border-radius:12px;
+  padding:4px;
   margin-bottom:18px;
 }
 
-.close{
-  border:0;
-  background:#eef2f7;
-  border-radius:10px;
-  padding:7px 10px;
-}
-
-.field{
-  margin:10px 0;
-}
-
-.field label{
-  display:block;
-  font-size:12px;
-  font-weight:bold;
-  color:#475569;
-  margin-bottom:6px;
-}
-
-.field input{
-  width:100%;
-  padding:12px;
-  border:1px solid #dbe2ea;
-  border-radius:11px;
-  outline:none;
-}
-
-.auth-btn{
-  width:100%;
-  border:0;
-  background:#e11d48;
-  color:white;
-  padding:13px;
-  border-radius:12px;
-  font-weight:bold;
-  margin-top:8px;
-}
-
-.switch{
+.auth-tab{
   border:0;
   background:none;
-  color:#e11d48;
-  font-weight:bold;
-  margin-top:13px;
+  color:var(--muted);
+  padding:11px;
+  border-radius:9px;
+  font-weight:800;
+}
+
+.auth-tab.active{
+  color:#03150d;
+  background:var(--green);
+}
+
+.input{
   width:100%;
+  padding:13px;
+  margin-bottom:12px;
+  border-radius:11px;
+  border:1px solid var(--line);
+  outline:none;
+  background:#071321;
+  color:white;
 }
 
-.status{
-  font-size:12px;
-  margin-top:10px;
-  color:#64748b;
+.input:focus{
+  border-color:var(--green);
+}
+
+.auth-submit{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:11px;
+  background:var(--green);
+  color:#03150d;
+  font-weight:900;
+}
+
+.auth-status{
+  min-height:22px;
+  margin-top:12px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.4;
+}
+
+/* PLAYER */
+
+.player-modal{
+  align-items:center;
+}
+
+.player-box{
+  width:min(900px,100%);
+  background:#02070d;
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid var(--line);
+}
+
+.player-screen{
+  position:relative;
+  aspect-ratio:16/9;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.player-screen video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
+}
+
+.player-placeholder{
   text-align:center;
+  padding:25px;
+  max-width:500px;
 }
 
-body.dark{
-  background:#07101f;
-  color:#f8fafc;
+.player-placeholder .big{
+  font-size:50px;
+  margin-bottom:12px;
 }
 
-body.dark .bottom-nav{
-  background:#0d1728;
-  border-color:#223047;
+.player-placeholder h3{
+  margin-bottom:8px;
 }
 
-body.dark .tab{
-  background:#1b293d;
-  color:#dbeafe;
+.player-placeholder p{
+  color:var(--muted);
+  line-height:1.5;
+  font-size:13px;
 }
 
-body.dark .match-card,
-body.dark .channel-card,
-body.dark .settings-card,
-body.dark .empty,
-body.dark .loading{
-  background:#101b2d;
-  border-color:#223047;
+.player-info{
+  padding:15px;
+  background:#07111f;
 }
 
-body.dark .modal-box{
-  background:#101b2d;
-  color:white;
+.player-info h3{
+  margin-bottom:5px;
 }
 
-body.dark .field input{
-  background:#0b1424;
-  color:white;
-  border-color:#2a3a52;
+.player-info p{
+  color:var(--muted);
+  font-size:13px;
 }
 
-body.dark .league,
-body.dark .minute,
-body.dark .count{
-  color:#94a3b8;
+/* PAGE */
+
+.page{
+  padding:15px 0;
 }
 
+.info-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:12px;
+}
+
+.info-card h3{
+  margin-bottom:9px;
+}
+
+.info-card p{
+  color:var(--muted);
+  line-height:1.6;
+  font-size:14px;
+}
+
+.danger-btn{
+  width:100%;
+  padding:12px;
+  border:1px solid rgba(255,77,95,.3);
+  border-radius:11px;
+  background:rgba(255,77,95,.08);
+  color:#ff8290;
+  font-weight:800;
+}
+
+/* DESKTOP */
+
+@media(max-width:650px){
+  .matches{
+    grid-template-columns:1fr;
+  }
+
+  .hero-box h1{
+    font-size:27px;
+  }
+}
+
+@media(min-width:900px){
+  .matches{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
 </style>
-
 </head>
 
 <body>
 
+<header class="header">
+  <div class="header-inner">
 
-<!-- ================================
-     HEADER
-================================ -->
+    <div class="logo">
+      <div class="logo-ball">
+        <span>⚽</span>
+      </div>
+      <span>GoalStream Live</span>
+    </div>
 
-<header>
+    <div class="header-actions">
 
-<div class="top">
+      <button
+        class="icon-btn"
+        onclick="toggleDarkMode()"
+        title="Theme">
+        🌙
+      </button>
 
-<div class="brand">
+      <button
+        id="loginButton"
+        class="login-btn"
+        onclick="openAuth()">
+        Login
+      </button>
 
-<h1>
-⚽ GoalStream Live
-</h1>
+    </div>
 
-<p>
-Live Football • Fixtures • Scores
-</p>
-
-</div>
-
-<button
-class="account"
-id="accountBtn"
-onclick="openAuth()"
->
-Login
-</button>
-
-</div>
-
+  </div>
 </header>
 
 
-<!-- ================================
-     HOME
-================================ -->
+<section class="hero">
 
-<main id="home">
+  <div class="hero-box">
 
+    <h1>Football Live, All in One Place</h1>
 
-<div class="tabs">
+    <p>
+      Follow live football scores, fixtures and match information
+      from competitions around the world.
+    </p>
 
-<button
-class="tab active"
-id="liveTab"
-onclick="showTab('live',this)"
->
-🔴 Live
-</button>
+    <div class="hero-buttons">
 
-<button
-class="tab"
-id="fixturesTab"
-onclick="showTab('fixtures',this)"
->
-📅 Fixtures
-</button>
+      <button
+        class="primary-btn"
+        onclick="showTab('live')">
+        🔴 Watch Live
+      </button>
 
-</div>
+      <button
+        class="secondary-btn"
+        onclick="showTab('fixtures')">
+        📅 Fixtures
+      </button>
 
+    </div>
 
-<!-- ================================
-     LIVE
-================================ -->
-
-<section id="live">
-
-<div class="section">
-
-<div class="section-title">
-
-<h2>
-Live Matches
-</h2>
-
-<span
-class="count"
-id="matchCount"
->
-Loading...
-</span>
-
-</div>
-
-<div id="matches">
-
-<div class="loading">
-⚽ Loading live football matches...
-</div>
-
-</div>
-
-</div>
+  </div>
 
 </section>
 
 
-<!-- ================================
-     FIXTURES
-================================ -->
+<div class="categories">
 
-<section
-id="fixtures"
-class="hidden"
->
-
-<div class="section">
-
-<div class="section-title">
-
-<h2>
-Today's Fixtures
-</h2>
-
-<span
-class="count"
-id="fixtureCount"
->
-Loading...
-</span>
+  <button
+    class="category active"
+    onclick="filterCategory('Football',this)">
+    ⚽ Football
+  </button>
 
 </div>
 
-<div id="fixtureList">
 
-<div class="loading">
-📅 Loading today's fixtures...
-</div>
+<main class="main">
 
-</div>
+  <!-- LIVE PAGE -->
 
-</div>
+  <section id="livePage">
 
-</section>
+    <div class="section-head">
+
+      <div>
+        <h2>Live Football</h2>
+        <span id="liveCount">Checking live matches...</span>
+      </div>
+
+      <button
+        class="refresh-btn"
+        onclick="loadLiveMatches()">
+        ↻ Refresh
+      </button>
+
+    </div>
+
+    <div
+      id="liveStatus"
+      class="status-box">
+      Loading live football matches...
+    </div>
+
+    <div
+      id="liveMatches"
+      class="matches">
+    </div>
+
+  </section>
+
+
+  <!-- FIXTURES PAGE -->
+
+  <section
+    id="fixturesPage"
+    class="hidden">
+
+    <div class="section-head">
+
+      <div>
+        <h2>Today's Fixtures</h2>
+        <span>Football matches</span>
+      </div>
+
+      <button
+        class="refresh-btn"
+        onclick="loadFixtures()">
+        ↻ Refresh
+      </button>
+
+    </div>
+
+    <div
+      id="fixtureStatus"
+      class="status-box">
+      Loading fixtures...
+    </div>
+
+    <div
+      id="fixtures"
+      class="matches">
+    </div>
+
+  </section>
+
+
+  <!-- SETTINGS PAGE -->
+
+  <section
+    id="settingsPage"
+    class="hidden page">
+
+    <div class="section-head">
+      <h2>Settings</h2>
+    </div>
+
+    <div class="info-card">
+
+      <h3>GoalStream Live</h3>
+
+      <p>
+        Football-only live scores and fixtures.
+        Your account is used for authentication.
+      </p>
+
+    </div>
+
+    <div class="info-card">
+
+      <h3>Theme</h3>
+
+      <p>
+        Use the moon button at the top to switch the app theme.
+      </p>
+
+    </div>
+
+    <div
+      id="accountCard"
+      class="info-card">
+
+      <h3>Account</h3>
+
+      <p id="accountText">
+        You are currently browsing as a guest.
+      </p>
+
+      <br>
+
+      <button
+        id="logoutButton"
+        class="danger-btn hidden"
+        onclick="logout()">
+        Log out
+      </button>
+
+    </div>
+
+  </section>
 
 
 </main>
 
 
-<!-- ================================
-     LIVE TV
-================================ -->
-
-<section
-id="tv"
-class="hidden"
->
-
-<div class="section">
-
-<div class="section-title">
-
-<h2>
-📺 Live TV
-</h2>
-
-</div>
-
-
-<div class="channel-card">
-
-<div class="channel-info">
-
-<div class="channel-logo">
-HD
-</div>
-
-<div>
-
-<div class="channel-name">
-Sports HD
-</div>
-
-<div class="quality">
-● Authorized stream ready
-</div>
-
-</div>
-
-</div>
-
-<button
-class="watch-btn"
-onclick="openPlayer('Sports HD')"
->
-▶ Watch Channel
-</button>
-
-</div>
-
-
-<div class="channel-card">
-
-<div class="channel-info">
-
-<div class="channel-logo">
-SD
-</div>
-
-<div>
-
-<div class="channel-name">
-Sports SD
-</div>
-
-<div class="quality">
-● Authorized stream ready
-</div>
-
-</div>
-
-</div>
-
-<button
-class="watch-btn"
-onclick="openPlayer('Sports SD')"
->
-▶ Watch Channel
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ================================
-     SETTINGS
-================================ -->
-
-<section
-id="settings"
-class="hidden"
->
-
-<div class="section">
-
-<div class="section-title">
-
-<h2>
-⚙️ Settings
-</h2>
-
-</div>
-
-
-<div
-class="settings-card"
-onclick="toggleDarkMode()"
->
-
-<strong>
-🌙 Dark Mode
-</strong>
-
-<br>
-
-<span>
-Tap to switch
-</span>
-
-</div>
-
-
-<div
-class="settings-card"
-onclick="logout()"
->
-
-<strong>
-🚪 Logout
-</strong>
-
-<br>
-
-<span id="logoutText">
-Login required
-</span>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ================================
-     BOTTOM NAV
-================================ -->
+<!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
 
+  <div class="nav-inner">
 
-<div
-class="nav-item active"
-onclick="openPage('home',this)"
->
+    <button
+      id="navLive"
+      class="nav-btn active"
+      onclick="showTab('live')">
 
-<span class="nav-icon">
-🏠
-</span>
+      <span class="nav-icon">🔴</span>
+      Live
 
-Home
-
-</div>
+    </button>
 
 
-<div
-class="nav-item"
-onclick="openPage('tv',this)"
->
+    <button
+      id="navFixtures"
+      class="nav-btn"
+      onclick="showTab('fixtures')">
 
-<span class="nav-icon">
-📺
-</span>
+      <span class="nav-icon">📅</span>
+      Fixtures
 
-Live TV
-
-</div>
+    </button>
 
 
-<div
-class="nav-item"
-onclick="openPage('settings',this)"
->
+    <button
+      class="nav-btn"
+      onclick="openAuth()">
 
-<span class="nav-icon">
-⚙️
-</span>
+      <span class="nav-icon">👤</span>
+      Account
 
-Settings
+    </button>
 
-</div>
 
+    <button
+      id="navSettings"
+      class="nav-btn"
+      onclick="showTab('settings')">
+
+      <span class="nav-icon">⚙️</span>
+      Settings
+
+    </button>
+
+  </div>
 
 </nav>
 
 
-<!-- ================================
-     AUTH MODAL
-================================ -->
+<!-- AUTH MODAL -->
 
 <div
-id="authModal"
-class="modal hidden"
->
+  id="authModal"
+  class="modal hidden">
 
-<div class="modal-box">
+  <div class="modal-box">
 
-<div class="modal-head">
+    <div class="modal-head">
 
-<h2 id="authTitle">
-Login
-</h2>
+      <h3 id="authTitle">Login</h3>
 
-<button
-class="close"
-onclick="closeAuth()"
->
-✕
-</button>
+      <button
+        class="close-btn"
+        onclick="closeAuth()">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="auth-tabs">
+
+        <button
+          id="loginTab"
+          class="auth-tab active"
+          onclick="setAuthMode('login')">
+          Login
+        </button>
+
+        <button
+          id="signupTab"
+          class="auth-tab"
+          onclick="setAuthMode('signup')">
+          Sign up
+        </button>
+
+      </div>
+
+
+      <input
+        id="email"
+        class="input"
+        type="email"
+        placeholder="Email address"
+        autocomplete="email">
+
+
+      <input
+        id="password"
+        class="input"
+        type="password"
+        placeholder="Password"
+        autocomplete="current-password">
+
+
+      <button
+        class="auth-submit"
+        onclick="submitAuth()">
+        Continue
+      </button>
+
+
+      <div
+        id="authStatus"
+        class="auth-status">
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
 
 
-<div class="field">
-
-<label>
-Email
-</label>
-
-<input
-id="email"
-type="email"
-autocomplete="email"
-placeholder="you@example.com"
->
-
-</div>
-
-
-<div class="field">
-
-<label>
-Password
-</label>
-
-<input
-id="password"
-type="password"
-autocomplete="current-password"
-placeholder="••••••••"
->
-
-</div>
-
-
-<button
-class="auth-btn"
-id="authSubmit"
-onclick="submitAuth()"
->
-Login
-</button>
-
-
-<button
-class="switch"
-id="authSwitch"
-onclick="switchAuth()"
->
-Create an account
-</button>
-
+<!-- PLAYER MODAL -->
 
 <div
-class="status"
-id="authStatus"
->
-</div>
+  id="playerModal"
+  class="modal player-modal hidden">
 
-</div>
+  <div class="player-box">
 
-</div>
+    <div class="modal-head">
 
+      <h3 id="playerTitle">
+        Live Match
+      </h3>
 
-<!-- ================================
-     PLAYER MODAL
-================================ -->
+      <button
+        class="close-btn"
+        onclick="closePlayer()">
+        ×
+      </button>
 
-<div
-id="playerModal"
-class="modal hidden"
->
-
-<div class="modal-box">
-
-<div class="modal-head">
-
-<h2 id="playerTitle">
-Live Player
-</h2>
-
-<button
-class="close"
-onclick="closePlayer()"
->
-✕
-</button>
-
-</div>
+    </div>
 
 
-<div class="empty">
+    <div class="player-screen">
 
-🎥 No authorized stream has been configured yet.
+      <video
+        id="matchVideo"
+        controls
+        playsinline
+        class="hidden">
+      </video>
 
-<br><br>
 
-This player is ready for your licensed HLS/MP4 stream.
+      <div
+        id="playerPlaceholder"
+        class="player-placeholder">
 
-</div>
+        <div class="big">⚽</div>
 
-</div>
+        <h3 id="playerMessage">
+          Live stream unavailable
+        </h3>
+
+        <p>
+          This player will only play a legitimate
+          stream URL supplied by your streaming provider.
+          Live football scores and match information
+          are still available above.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="player-info">
+
+      <h3 id="playerMatchName">
+        Football Match
+      </h3>
+
+      <p id="playerMatchInfo">
+        GoalStream Live
+      </p>
+
+    </div>
+
+  </div>
 
 </div>
 
 
 <script>
 
-
-/* ==================================
+/* =========================================================
    SUPABASE
-================================== */
+========================================================= */
 
 const SUPABASE_URL =
 "https://yycqmjdlhicdhfgjfiwa.supabase.co";
 
-
 const SUPABASE_ANON_KEY =
 "sb_publishable_Qt32N7lLLjtCLKiSnDlE9w_XK1K2xtC";
-
-
-/* ==================================
-   FOOTBALL EDGE FUNCTION
-================================== */
 
 const FOOTBALL_API =
 "https://yycqmjdlhicdhfgjfiwa.supabase.co/functions/v1/smooth-processor";
 
 
-const hasSupabase =
-SUPABASE_URL.startsWith("https://") &&
-!SUPABASE_URL.includes("YOUR_") &&
-!SUPABASE_ANON_KEY.includes("YOUR_");
+let supabaseClient = null;
 
 
-const supabaseClient =
-hasSupabase
-? window.supabase.createClient(
-    SUPABASE_URL,
+try{
+
+  if(
+    window.supabase &&
+    SUPABASE_URL &&
     SUPABASE_ANON_KEY
-  )
-: null;
+  ){
 
+    supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
 
-/* ==================================
-   STATE
-================================== */
+  }
 
-let currentTab =
-"live";
+}catch(error){
 
-let authMode =
-"login";
-
-
-/* ==================================
-   STATUS CODES
-================================== */
-
-const LIVE_STATUSES = [
-"1H",
-"HT",
-"2H",
-"ET",
-"BT",
-"P"
-];
-
-
-const FINISHED_STATUSES = [
-"FT",
-"AET",
-"PEN"
-];
-
-
-const UPCOMING_STATUSES = [
-"NS",
-"TBD"
-];
-
-
-/* ==================================
-   LOCAL DATE
-================================== */
-
-function getLocalDate(){
-
-const now =
-new Date();
-
-const year =
-now.getFullYear();
-
-const month =
-String(
-now.getMonth()+1
-).padStart(2,"0");
-
-const day =
-String(
-now.getDate()
-).padStart(2,"0");
-
-return `${year}-${month}-${day}`;
+  console.error(
+    "Supabase initialization error:",
+    error
+  );
 
 }
 
 
-/* ==================================
+/* =========================================================
+   STATE
+========================================================= */
+
+let authMode = "login";
+
+let currentTab = "live";
+
+let footballMatches = [];
+
+let fixtureMatches = [];
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+const LIVE_STATUSES = [
+  "1H",
+  "HT",
+  "2H",
+  "ET",
+  "BT",
+  "P"
+];
+
+const FINISHED_STATUSES = [
+  "FT",
+  "AET",
+  "PEN"
+];
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value){
+
+  if(value === null || value === undefined){
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function setStatus(
+  elementId,
+  message,
+  type = ""
+){
+
+  const element =
+    document.getElementById(elementId);
+
+  if(!element){
+    return;
+  }
+
+  element.textContent = message;
+
+  element.className =
+    "status-box " + type;
+}
+
+
+/* =========================================================
+   API RESPONSE PARSER
+========================================================= */
+
+function getApiArray(data){
+
+  if(Array.isArray(data)){
+    return data;
+  }
+
+  if(
+    data &&
+    Array.isArray(data.response)
+  ){
+    return data.response;
+  }
+
+  if(
+    data &&
+    data.data &&
+    Array.isArray(data.data)
+  ){
+    return data.data;
+  }
+
+  if(
+    data &&
+    data.matches &&
+    Array.isArray(data.matches)
+  ){
+    return data.matches;
+  }
+
+  return [];
+}
+
+
+/* =========================================================
    LOAD LIVE MATCHES
-================================== */
+========================================================= */
 
 async function loadLiveMatches(){
 
-const box =
-document.getElementById(
-"matches"
+  const container =
+    document.getElementById("liveMatches");
+
+  const count =
+    document.getElementById("liveCount");
+
+  setStatus(
+    "liveStatus",
+    "Loading live football matches..."
+  );
+
+  count.textContent =
+    "Connecting to football server...";
+
+  container.innerHTML = "";
+
+
+  try{
+
+    const response =
+      await fetch(
+        FOOTBALL_API + "?live=all",
+        {
+          method:"GET",
+          headers:{
+            "Accept":"application/json"
+          },
+          cache:"no-store"
+        }
+      );
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Server returned HTTP " +
+        response.status
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    console.log(
+      "Live API response:",
+      data
+    );
+
+
+    footballMatches =
+      getApiArray(data);
+
+
+    if(
+      footballMatches.length === 0
+    ){
+
+      count.textContent =
+        "No live matches";
+
+      setStatus(
+        "liveStatus",
+        "There are no live football matches right now.",
+        "success"
+      );
+
+      container.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">⚽</div>
+          <h3>No live matches</h3>
+          <p>
+            There are currently no live football
+            matches returned by the football server.
+            Tap Refresh to check again.
+          </p>
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    count.textContent =
+      footballMatches.length +
+      " live match" +
+      (footballMatches.length === 1 ? "" : "es");
+
+
+    setStatus(
+      "liveStatus",
+      "Live football matches loaded.",
+      "success"
+    );
+
+
+    renderLiveMatches(
+      footballMatches
+    );
+
+
+  }catch(error){
+
+    console.error(
+  "Live matches error:",
+  error
 );
-
-const count =
-document.getElementById(
-"matchCount"
-);
-
-
-box.innerHTML = `
-<div class="loading">
-⚽ Checking live football matches...
-</div>
-`;
-
-
-try{
-
-const response =
-await fetch(
-`${FOOTBALL_API}?live=all`,
-{
-cache:"no-store"
-}
-);
-
-
-if(!response.ok){
-
-throw new Error(
-"Live API request failed: " +
-response.status
-);
-
-}
-
-
-const data =
-await response.json();
-
-
-const matches =
-Array.isArray(
-data.response
-)
-? data.response
-: [];
-
-
-renderLiveMatches(
-matches
-);
-
-
-}catch(error){
-
-console.error(
-"Live matches error:",
-error
-);
-
 
 count.textContent =
-"Unavailable";
+  "Connection problem";
 
+setStatus(
+  "liveStatus",
+  "Could not load live matches. Check the Supabase Function and API connection, then tap Refresh.",
+  "error"
+);
 
-box.innerHTML = `
-<div class="empty">
+container.innerHTML = `
+  <div class="empty">
+    <div class="empty-icon">📡</div>
 
-⚠️ Live matches could not be loaded.
+    <h3>Unable to load matches</h3>
 
-<br><br>
+    <p>
+      The app could not receive football data
+      from the server.
+    </p>
 
-Please refresh the page.
+    <br>
 
-</div>
+    <button
+      class="primary-btn"
+      onclick="loadLiveMatches()">
+      Try Again
+    </button>
+  </div>
 `;
 
 }
@@ -1107,1190 +1378,1316 @@ Please refresh the page.
 }
 
 
-/* ==================================
+/* =========================================================
    RENDER LIVE
-================================== */
+========================================================= */
 
-function renderLiveMatches(
-matches
-){
+function renderLiveMatches(matches){
 
-const list =
-matches.filter(
-item =>
-LIVE_STATUSES.includes(
-item?.fixture?.status?.short
-)
-);
+  const container =
+    document.getElementById("liveMatches");
 
+  container.innerHTML = "";
 
-document.getElementById(
-"matchCount"
-).textContent =
-`${list.length} live`;
+  matches.forEach(
+    (match,index) => {
 
+      container.insertAdjacentHTML(
+        "beforeend",
+        matchCard(
+          match,
+          true,
+          index
+        )
+      );
 
-const box =
-document.getElementById(
-"matches"
-);
-
-
-if(!list.length){
-
-box.innerHTML = `
-<div class="empty">
-
-⚽ No football match is live right now.
-
-<br>
-
-📅 Open <strong>Fixtures</strong>
-to see today's matches.
-
-</div>
-`;
-
-return;
+    }
+  );
 
 }
 
 
-box.innerHTML =
-list
-.map(
-createMatchCard
-)
-.join("");
-
-}
-
-
-/* ==================================
-   LOAD TODAY'S FIXTURES
-================================== */
+/* =========================================================
+   LOAD FIXTURES
+========================================================= */
 
 async function loadFixtures(){
 
-const box =
-document.getElementById(
-"fixtureList"
-);
+  const container =
+    document.getElementById("fixtures");
 
-const count =
-document.getElementById(
-"fixtureCount"
-);
+  setStatus(
+    "fixtureStatus",
+    "Loading today's football fixtures..."
+  );
 
+  container.innerHTML = "";
 
-box.innerHTML = `
-<div class="loading">
-📅 Loading today's football fixtures...
-</div>
-`;
+  const today =
+    new Date()
+      .toISOString()
+      .split("T")[0];
 
+  try{
 
-try{
+    const response =
+      await fetch(
+        FOOTBALL_API +
+        "?date=" +
+        encodeURIComponent(today),
+        {
+          method:"GET",
+          headers:{
+            "Accept":"application/json"
+          },
+          cache:"no-store"
+        }
+      );
 
-const today =
-getLocalDate();
+    if(!response.ok){
 
+      throw new Error(
+        "Server returned HTTP " +
+        response.status
+      );
 
-const response =
-await fetch(
-`${FOOTBALL_API}?date=${today}`,
-{
-cache:"no-store"
+    }
+
+    const data =
+      await response.json();
+
+    console.log(
+      "Fixtures API response:",
+      data
+    );
+
+    fixtureMatches =
+      getApiArray(data);
+
+    if(
+      fixtureMatches.length === 0
+    ){
+
+      setStatus(
+        "fixtureStatus",
+        "No football fixtures were returned for today.",
+        "success"
+      );
+
+      container.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">📅</div>
+
+          <h3>No fixtures found</h3>
+
+          <p>
+            No football fixtures were returned
+            for today.
+          </p>
+        </div>
+      `;
+
+      return;
+
+    }
+
+    setStatus(
+      "fixtureStatus",
+      fixtureMatches.length +
+      " football fixture" +
+      (fixtureMatches.length === 1 ? "" : "s") +
+      " loaded.",
+      "success"
+    );
+
+    container.innerHTML = "";
+
+    fixtureMatches.forEach(
+      (match,index) => {
+
+        container.insertAdjacentHTML(
+          "beforeend",
+          matchCard(
+            match,
+            false,
+            index
+          )
+        );
+
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Fixtures error:",
+      error
+    );
+
+    setStatus(
+      "fixtureStatus",
+      "Could not load today's fixtures.",
+      "error"
+    );
+
+    container.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">📡</div>
+
+        <h3>Unable to load fixtures</h3>
+
+        <p>
+          Check the football API connection
+          and try again.
+        </p>
+
+        <br>
+
+        <button
+          class="primary-btn"
+          onclick="loadFixtures()">
+          Try Again
+        </button>
+      </div>
+    `;
+
+  }
+
 }
-);
 
 
-if(!response.ok){
+/* =========================================================
+   NORMALIZE MATCH
+========================================================= */
 
-throw new Error(
-"Fixture API request failed: " +
-response.status
-);
+function normalizeMatch(match){
+
+  const teams =
+    match &&
+    match.teams
+      ? match.teams
+      : {};
+
+  const home =
+    teams.home || {};
+
+  const away =
+    teams.away || {};
+
+  const goals =
+    match.goals || {};
+
+  const fixture =
+    match.fixture || {};
+
+  const league =
+    match.league || {};
+
+  const status =
+    fixture.status ||
+    match.status ||
+    {};
+
+  return {
+
+    id:
+      match.id ||
+      fixture.id ||
+      Math.random()
+        .toString(36)
+        .slice(2),
+
+    homeName:
+      home.name ||
+      match.homeTeam ||
+      match.home ||
+      "Home Team",
+
+    awayName:
+      away.name ||
+      match.awayTeam ||
+      match.away ||
+      "Away Team",
+
+    homeLogo:
+      home.logo ||
+      "",
+
+    awayLogo:
+      away.logo ||
+      "",
+
+    homeScore:
+      goals.home ??
+      match.homeScore ??
+      "-",
+
+    awayScore:
+      goals.away ??
+      match.awayScore ??
+      "-",
+
+    status:
+      status.short ||
+      match.statusShort ||
+      match.status ||
+      "",
+
+    elapsed:
+      status.elapsed ??
+      match.elapsed ??
+      "",
+
+    date:
+      fixture.date ||
+      match.date ||
+      match.startTime ||
+      "",
+
+    league:
+      league.name ||
+      match.leagueName ||
+      "Football",
+
+    country:
+      league.country ||
+      "",
+
+    venue:
+      fixture.venue &&
+      fixture.venue.name
+        ? fixture.venue.name
+        : "",
+
+    raw:
+      match
+
+  };
 
 }
 
 
-const data =
-await response.json();
+/* =========================================================
+   MATCH CARD
+========================================================= */
 
-
-const fixtures =
-Array.isArray(
-data.response
-)
-? data.response
-: [];
-
-
-renderFixtures(
-fixtures
-);
-
-
-}catch(error){
-
-console.error(
-"Fixtures error:",
-error
-);
-
-
-count.textContent =
-"Unavailable";
-
-
-box.innerHTML = `
-<div class="empty">
-
-⚠️ Fixtures could not be loaded.
-
-<br><br>
-
-Please refresh the page.
-
-</div>
-`;
-
-}
-
-}
-
-
-/* ==================================
-   RENDER FIXTURES
-================================== */
-
-function renderFixtures(
-fixtures
+function matchCard(
+  originalMatch,
+  isLive,
+  index
 ){
 
-const list =
-fixtures.filter(
-item => {
+  const match =
+    normalizeMatch(
+      originalMatch
+    );
 
-const status =
-item?.fixture?.status?.short;
+  const status =
+    String(match.status || "")
+      .toUpperCase();
 
+  const isFinished =
+    FINISHED_STATUSES.includes(
+      status
+    );
 
-return (
-!FINISHED_STATUSES.includes(status)
-);
+  const isCurrentlyLive =
+    isLive ||
+    LIVE_STATUSES.includes(
+      status
+    );
+
+  const timeText =
+    isCurrentlyLive
+      ? (
+          match.elapsed
+            ? match.elapsed + "'"
+            : "LIVE"
+        )
+      : formatMatchTime(
+          match.date
+        );
+
+  const homeScore =
+    match.homeScore ?? "-";
+
+  const awayScore =
+    match.awayScore ?? "-";
+
+  const streamUrl =
+    findStreamUrl(
+      match.raw
+    );
+
+  const streamAttribute =
+    streamUrl
+      ? `data-stream="${escapeHtml(streamUrl)}"`
+      : "";
+
+  return `
+
+    <article class="match-card">
+
+      <div class="match-top">
+
+        <span class="league">
+          ${escapeHtml(
+            match.league
+          )}
+        </span>
+
+        ${
+          isCurrentlyLive
+          ?
+          `<span class="live-badge">
+            🔴 ${escapeHtml(timeText)}
+          </span>`
+          :
+          `<span class="time-badge">
+            ${escapeHtml(timeText)}
+          </span>`
+        }
+
+      </div>
+
+      <div class="teams">
+
+        <div class="team">
+
+          ${
+            match.homeLogo
+            ?
+            `<img
+              class="team-logo"
+              src="${escapeHtml(match.homeLogo)}"
+              alt=""
+              onerror="this.style.display='none'">`
+            :
+            `<div class="team-logo">⚽</div>`
+          }
+
+          <div class="team-name">
+            ${escapeHtml(match.homeName)}
+          </div>
+
+        </div>
+
+        <div class="score">
+
+          ${escapeHtml(homeScore)}
+          -
+          ${escapeHtml(awayScore)}
+
+          <small>
+            ${
+              isCurrentlyLive
+              ? "LIVE"
+              : escapeHtml(status || "MATCH")
+            }
+          </small>
+
+        </div>
+
+        <div class="team">
+
+          ${
+            match.awayLogo
+            ?
+            `<img
+              class="team-logo"
+              src="${escapeHtml(match.awayLogo)}"
+              alt=""
+              onerror="this.style.display='none'">`
+            :
+            `<div class="team-logo">⚽</div>`
+          }
+
+          <div class="team-name">
+            ${escapeHtml(match.awayName)}
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card-actions">
+
+        ${
+          isCurrentlyLive
+          ?
+          `<button
+            class="watch-btn"
+            ${streamAttribute}
+            onclick="openPlayerFromCard(this,${index},${isLive})">
+            ▶ Open Live
+          </button>`
+          :
+          `<button
+            class="watch-btn"
+            onclick="reminder()">
+            🔔 Remind Me
+          </button>`
+        }
+
+        <button
+          class="remind-btn"
+          onclick="reminder()">
+          🔔
+        </button>
+
+      </div>
+
+    </article>
+
+  `;
 
 }
-);
 
 
-document.getElementById(
-"fixtureCount"
-).textContent =
-`${list.length} matches`;
+/* =========================================================
+   STREAM URL
+========================================================= */
 
+function findStreamUrl(match){
 
-const box =
-document.getElementById(
-"fixtureList"
-);
+  if(!match){
+    return "";
+  }
 
+  const possibleKeys = [
 
-if(!list.length){
+    "stream_url",
+    "streamUrl",
+    "video_url",
+    "videoUrl",
+    "live_url",
+    "liveUrl",
+    "playback_url",
+    "playbackUrl"
 
-box.innerHTML = `
-<div class="empty">
+  ];
 
-📅 No upcoming football fixtures found today.
+  for(
+    const key of possibleKeys
+  ){
 
-</div>
-`;
+    if(
+      typeof match[key] === "string" &&
+      match[key].startsWith("http")
+    ){
 
-return;
+      return match[key];
+
+    }
+
+  }
+
+  if(
+    match.stream &&
+    typeof match.stream === "string"
+  ){
+
+    return match.stream;
+
+  }
+
+  if(
+    match.stream &&
+    typeof match.stream.url === "string"
+  ){
+
+    return match.stream.url;
+
+  }
+
+  return "";
 
 }
 
 
-box.innerHTML =
-list
-.map(
-createMatchCard
-)
-.join("");
+/* =========================================================
+   OPEN PLAYER
+========================================================= */
 
-}
-
-
-/* ==================================
-   CREATE MATCH CARD
-================================== */
-
-function createMatchCard(
-item
+function openPlayerFromCard(
+  button,
+  index,
+  isLive
 ){
 
-const fixture =
-item?.fixture || {};
+  const list =
+    isLive
+      ? footballMatches
+      : fixtureMatches;
 
+  const original =
+    list[index];
 
-const league =
-item?.league || {};
+  if(!original){
 
+    openPlayer(
+      "Football Match",
+      "Match information"
+    );
 
-const teams =
-item?.teams || {};
+    return;
 
+  }
 
-const goals =
-item?.goals || {};
+  const match =
+    normalizeMatch(
+      original
+    );
 
+  const stream =
+    button.dataset.stream ||
+    findStreamUrl(
+      original
+    );
 
-const status =
-fixture?.status || {};
+  openPlayer(
+    match.homeName +
+    " vs " +
+    match.awayName,
 
+    match.league,
 
-const home =
-teams?.home || {};
-
-
-const away =
-teams?.away || {};
-
-
-const statusCode =
-status?.short || "NS";
-
-
-const isLive =
-LIVE_STATUSES.includes(
-statusCode
-);
-
-
-const isFinished =
-FINISHED_STATUSES.includes(
-statusCode
-);
-
-
-const homeScore =
-goals?.home ?? "-";
-
-
-const awayScore =
-goals?.away ?? "-";
-
-
-const kickoff =
-formatTime(
-fixture.date
-);
-
-
-const matchDate =
-formatDate(
-fixture.date
-);
-
-
-let badgeText =
-"UPCOMING";
-
-
-let badgeClass =
-"status-badge status-upcoming";
-
-
-if(isLive){
-
-badgeText =
-statusCode === "HT"
-? "HALF TIME"
-: "● LIVE";
-
-badgeClass =
-"status-badge";
+    stream
+  );
 
 }
 
 
-if(isFinished){
-
-badgeText =
-"FINISHED";
-
-badgeClass =
-"status-badge status-finished";
-
-}
-
-
-let middleContent = "";
-
-
-if(isLive){
-
-middleContent = `
-
-<div class="score">
-${homeScore} - ${awayScore}
-</div>
-
-<small class="minute">
-
-${
-statusCode === "HT"
-? "Half Time"
-: (
-status.elapsed
-? status.elapsed + "'"
-: "LIVE"
-)
-}
-
-</small>
-
-`;
-
-}else if(isFinished){
-
-middleContent = `
-
-<div class="score">
-${homeScore} - ${awayScore}
-</div>
-
-<small class="minute">
-FT
-</small>
-
-`;
-
-}else{
-
-middleContent = `
-
-<div class="score">
-${kickoff}
-</div>
-
-<small class="minute">
-${matchDate}
-</small>
-
-`;
-
-}
-
-
-let actionButton = "";
-
-
-if(isLive){
-
-actionButton = `
-
-<button
-class="watch-btn"
-onclick="openPlayerByMatch(
-'${escapeJS(home.name)}',
-'${escapeJS(away.name)}'
-)"
->
-▶ Watch Live
-</button>
-
-`;
-
-}else if(isFinished){
-
-actionButton = `
-
-<button
-class="watch-btn"
-onclick="openPlayerByMatch(
-'${escapeJS(home.name)}',
-'${escapeJS(away.name)}'
-)"
->
-📋 View Match
-</button>
-
-`;
-
-}else{
-
-actionButton = `
-
-<button
-class="watch-btn reminder-btn"
-onclick="reminder(
-'${escapeJS(home.name)} vs ${escapeJS(away.name)}'
-)"
->
-🔔 Set Reminder
-</button>
-
-`;
-
-}
-
-
-return `
-
-<div class="match-card">
-
-<span class="${badgeClass}">
-${badgeText}
-</span>
-
-
-<div class="league">
-
-${escapeHTML(
-league.name || "Football"
-)}
-
-${
-league.country
-? " • " +
-escapeHTML(
-league.country
-)
-: ""
-}
-
-</div>
-
-
-<div class="teams">
-
-
-<div class="team">
-
-${
-home.logo
-? `
-
-<img
-class="team-logo"
-src="${escapeHTML(home.logo)}"
-alt=""
-loading="lazy"
-onerror="this.style.display='none'"
->
-
-`
-: ""
-}
-
-${escapeHTML(
-home.name || "Home"
-)}
-
-</div>
-
-
-<div class="score-area">
-
-${middleContent}
-
-</div>
-
-
-<div class="team">
-
-${
-away.logo
-? `
-
-<img
-class="team-logo"
-src="${escapeHTML(away.logo)}"
-alt=""
-loading="lazy"
-onerror="this.style.display='none'"
->
-
-`
-: ""
-}
-
-${escapeHTML(
-away.name || "Away"
-)}
-
-</div>
-
-
-</div>
-
-
-${actionButton}
-
-</div>
-
-`;
-
-}
-
-
-/* ==================================
-   FORMAT TIME
-================================== */
-
-function formatTime(
-date
-){
-
-if(!date){
-
-return "--:--";
-
-}
-
-
-return new Date(date)
-.toLocaleTimeString(
-[],
-{
-hour:"2-digit",
-minute:"2-digit"
-}
-);
-
-}
-
-
-/* ==================================
-   FORMAT DATE
-================================== */
-
-function formatDate(
-date
-){
-
-if(!date){
-
-return "";
-
-}
-
-
-return new Date(date)
-.toLocaleDateString(
-[],
-{
-weekday:"short",
-day:"2-digit",
-month:"short"
-}
-);
-
-}
-
-
-/* ==================================
-   TABS
-================================== */
-
-function showTab(
-tab,
-btn
-){
-
-currentTab =
-tab;
-
-
-document
-.getElementById("live")
-.classList.add("hidden");
-
-
-document
-.getElementById("fixtures")
-.classList.add("hidden");
-
-
-document
-.getElementById(tab)
-.classList.remove("hidden");
-
-
-document
-.querySelectorAll(".tab")
-.forEach(
-button =>
-button.classList.remove("active")
-);
-
-
-btn.classList.add("active");
-
-
-if(tab === "live"){
-
-loadLiveMatches();
-
-}
-
-
-if(tab === "fixtures"){
-
-loadFixtures();
-
-}
-
-}
-
-
-/* ==================================
-   NAVIGATION
-================================== */
-
-function openPage(
-page,
-item
-){
-
-document
-.getElementById("home")
-.classList.add("hidden");
-
-
-document
-.getElementById("tv")
-.classList.add("hidden");
-
-
-document
-.getElementById("settings")
-.classList.add("hidden");
-
-
-document
-.getElementById(page)
-.classList.remove("hidden");
-
-
-document
-.querySelectorAll(".nav-item")
-.forEach(
-x =>
-x.classList.remove("active")
-);
-
-
-item.classList.add("active");
-
-
-if(page === "home"){
-
-if(currentTab === "live"){
-
-loadLiveMatches();
-
-}else{
-
-loadFixtures();
-
-}
-
-}
-
-}
-
-
-/* ==================================
+/* =========================================================
    PLAYER
-================================== */
+========================================================= */
 
 function openPlayer(
-name
+  title,
+  info,
+  streamUrl = ""
 ){
 
-document.getElementById(
-"playerTitle"
-).textContent =
-name;
+  const modal =
+    document.getElementById(
+      "playerModal"
+    );
 
+  const video =
+    document.getElementById(
+      "matchVideo"
+    );
 
-document.getElementById(
-"playerModal"
-).classList.remove("hidden");
+  const placeholder =
+    document.getElementById(
+      "playerPlaceholder"
+    );
 
-}
+  const titleElement =
+    document.getElementById(
+      "playerTitle"
+    );
 
+  const nameElement =
+    document.getElementById(
+      "playerMatchName"
+    );
 
-function openPlayerByMatch(
-home,
-away
-){
+  const infoElement =
+    document.getElementById(
+      "playerMatchInfo"
+    );
 
-openPlayer(
-`${home} vs ${away}`
-);
+  titleElement.textContent =
+    title || "Live Match";
+
+  nameElement.textContent =
+    title || "Football Match";
+
+  infoElement.textContent =
+    info || "GoalStream Live";
+
+  video.pause();
+
+  video.removeAttribute("src");
+
+  video.load();
+
+  video.classList.add(
+    "hidden"
+  );
+
+  placeholder.classList.remove(
+    "hidden"
+  );
+
+  if(streamUrl){
+
+    video.src =
+      streamUrl;
+
+    video.classList.remove(
+      "hidden"
+    );
+
+    placeholder.classList.add(
+      "hidden"
+    );
+
+    video.play()
+      .catch(
+        error => {
+          console.log(
+            "Autoplay blocked:",
+            error
+          );
+        }
+      );
+
+  }
+
+  modal.classList.remove(
+    "hidden"
+  );
 
 }
 
 
 function closePlayer(){
 
-document.getElementById(
-"playerModal"
-).classList.add("hidden");
+  const modal =
+    document.getElementById(
+      "playerModal"
+    );
+
+  const video =
+    document.getElementById(
+      "matchVideo"
+    );
+
+  video.pause();
+
+  video.removeAttribute(
+    "src"
+  );
+
+  video.load();
+
+  modal.classList.add(
+    "hidden"
+  );
 
 }
 
 
-/* ==================================
-   REMINDER
-================================== */
+/* =========================================================
+   TABS
+========================================================= */
 
-function reminder(
-name
+function showTab(tab){
+
+  currentTab =
+    tab;
+
+  const live =
+    document.getElementById(
+      "livePage"
+    );
+
+  const fixtures =
+    document.getElementById(
+      "fixturesPage"
+    );
+
+  const settings =
+    document.getElementById(
+      "settingsPage"
+    );
+
+  live.classList.add(
+    "hidden"
+  );
+
+  fixtures.classList.add(
+    "hidden"
+  );
+
+  settings.classList.add(
+    "hidden"
+  );
+
+  document
+    .getElementById("navLive")
+    .classList.remove("active");
+
+  document
+    .getElementById("navFixtures")
+    .classList.remove("active");
+
+  document
+    .getElementById("navSettings")
+    .classList.remove("active");
+
+  if(tab === "live"){
+
+    live.classList.remove(
+      "hidden"
+    );
+
+    document
+      .getElementById("navLive")
+      .classList.add("active");
+
+  }
+
+  if(tab === "fixtures"){
+
+    fixtures.classList.remove(
+      "hidden"
+    );
+
+    document
+      .getElementById("navFixtures")
+      .classList.add("active");
+
+    if(
+      fixtureMatches.length === 0
+    ){
+
+      loadFixtures();
+
+    }
+
+  }
+
+  if(tab === "settings"){
+
+    settings.classList.remove(
+      "hidden"
+    );
+
+    document
+      .getElementById("navSettings")
+      .classList.add("active");
+
+  }
+
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+function filterCategory(
+  category,
+  button
 ){
 
-alert(
-"Reminder saved for " +
-name
-);
+  document
+    .querySelectorAll(".category")
+    .forEach(
+      item =>
+        item.classList.remove(
+          "active"
+        )
+    );
+
+  button.classList.add(
+    "active"
+  );
+
+  if(category === "Football"){
+
+    showTab("live");
+
+  }
 
 }
 
 
-  K MODE
-================================== */
-
-function toggleDarkMode(){
-
-document.body.classList.toggle(
-"dark"
-);
-
-}
-
-
-/* ==================================
+/* =========================================================
    AUTH
-================================== */
+========================================================= */
 
 function openAuth(){
 
-document.getElementById(
-"authModal"
-).classList.remove(
-"hidden"
-);
+  document
+    .getElementById("authModal")
+    .classList.remove(
+      "hidden"
+    );
 
 }
 
 
 function closeAuth(){
 
-document.getElementById(
-"authModal"
-).classList.add(
-"hidden"
-);
+  document
+    .getElementById("authModal")
+    .classList.add(
+      "hidden"
+    );
 
 }
 
 
-function switchAuth(){
+function setAuthMode(
+  mode
+){
 
-authMode =
-authMode === "login"
-? "signup"
-: "login";
+  authMode =
+    mode;
 
+  const title =
+    document.getElementById(
+      "authTitle"
+    );
 
-document.getElementById(
-"authTitle"
-).textContent =
-authMode === "login"
-? "Login"
-: "Create account";
+  const loginTab =
+    document.getElementById(
+      "loginTab"
+    );
 
+  const signupTab =
+    document.getElementById(
+      "signupTab"
+    );
 
-document.getElementById(
-"authSubmit"
-).textContent =
-authMode === "login"
-? "Login"
-: "Sign up";
+  title.textContent =
+    mode === "login"
+      ? "Login"
+      : "Create Account";
 
+  loginTab.classList.toggle(
+    "active",
+    mode === "login"
+  );
 
-document.getElementById(
-"authSwitch"
-).textContent =
-authMode === "login"
-? "Create an account"
-: "Already have an account? Login";
+  signupTab.classList.toggle(
+    "active",
+    mode === "signup"
+  );
 
-
-document.getElementById(
-"authStatus"
-).textContent =
-"";
+  document
+    .getElementById(
+      "authStatus"
+    )
+    .textContent = "";
 
 }
 
-
-/* ==================================
-   SUBMIT AUTH
-================================== */
 
 async function submitAuth(){
 
-const email =
-document.getElementById(
-"email"
-).value.trim();
+  const email =
+    document
+      .getElementById("email")
+      .value
+      .trim();
 
+  const password =
+    document
+      .getElementById("password")
+      .value;
 
-const password =
-document.getElementById(
-"password"
-).value;
+  const status =
+    document
+      .getElementById(
+        "authStatus"
+      );
 
+  if(!email || !password){
 
-const status =
-document.getElementById(
-"authStatus"
-);
+    status.textContent =
+      "Enter your email and password.";
 
+    return;
 
-if(!email || !password){
+  }
 
-status.textContent =
-"Enter your email and password.";
+  if(password.length < 6){
 
-return;
+    status.textContent =
+      "Password must be at least 6 characters.";
 
-}
+    return;
 
+  }
 
-if(!hasSupabase){
+  if(!supabaseClient){
 
-status.textContent =
-"Supabase is not connected.";
+    status.textContent =
+      "Supabase is not connected.";
 
-return;
+    return;
 
-}
+  }
 
+  status.textContent =
+    "Please wait...";
 
-status.textContent =
-"Please wait...";
+  try{
 
+    let result;
 
-try{
+    if(authMode === "login"){
 
-let result;
+      result =
+        await supabaseClient.auth
+          .signInWithPassword({
+            email,
+            password
+          });
 
+    }else{
 
-if(authMode === "login"){
+      result =
+        await supabaseClient.auth
+          .signUp({
+            email,
+            password
+          });
 
-result =
-await supabaseClient.auth
-.signInWithPassword({
-email:email,
-password:password
-});
+    }
 
-}else{
+    if(result.error){
 
-result =
-await supabaseClient.auth
-.signUp({
-email:email,
-password:password
-});
+      status.textContent =
+        result.error.message;
 
-}
+      return;
 
+    }
 
-if(result.error){
+    if(authMode === "signup"){
 
-status.textContent =
-result.error.message;
+      status.textContent =
+        "Account created. Check your email if confirmation is required.";
 
-return;
+    }else{
 
-}
+      status.textContent =
+        "Login successful.";
 
+      closeAuth();
 
-if(authMode === "login"){
+    }
 
-status.textContent =
-"Login successful.";
+    updateAccountUI();
 
-updateAccount(
-result.data.session?.user ||
-result.data.user
-);
+  }catch(error){
 
-}else{
+    console.error(
+      "Auth error:",
+      error
+    );
 
-status.textContent =
-"Account created. Check your email if confirmation is enabled.";
+    status.textContent =
+      "Authentication failed. Please try again.";
 
-updateAccount(
-result.data.session?.user ||
-result.data.user
-);
-
-}
-
-
-setTimeout(
-closeAuth,
-900
-);
-
-
-}catch(error){
-
-console.error(
-"Authentication error:",
-error
-);
-
-
-status.textContent =
-"Authentication failed. Please try again.";
-
-}
+  }
 
 }
 
 
-/* ==================================
-   UPDATE ACCOUNT
-================================== */
+/* =========================================================
+   ACCOUNT
+========================================================= */
 
-function updateAccount(user){
+async function updateAccountUI(){
 
-const button =
-document.getElementById(
-"accountBtn"
-);
+  if(!supabaseClient){
+    return;
+  }
 
+  try{
 
-const logoutText =
-document.getElementById(
-"logoutText"
-);
+    const result =
+      await supabaseClient.auth
+        .getUser();
 
+    const user =
+      result.data &&
+      result.data.user;
 
-if(user){
+    const loginButton =
+      document.getElementById(
+        "loginButton"
+      );
 
-button.textContent =
-"Account";
+    const accountText =
+      document.getElementById(
+        "accountText"
+      );
 
+    const logoutButton =
+      document.getElementById(
+        "logoutButton"
+      );
 
-if(logoutText){
+    if(user){
 
-logoutText.textContent =
-"Sign out";
+      loginButton.textContent =
+        "Account";
+
+      accountText.textContent =
+        "Signed in as " +
+        user.email;
+
+      logoutButton.classList.remove(
+        "hidden"
+      );
+
+    }else{
+
+      loginButton.textContent =
+        "Login";
+
+      accountText.textContent =
+        "You are currently browsing as a guest.";
+
+      logoutButton.classList.add(
+        "hidden"
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Account check error:",
+      error
+    );
+
+  }
 
 }
 
-}else{
 
-button.textContent =
-"Login";
-
-
-if(logoutText){
-
-logoutText.textContent =
-"Login required";
-
-}
-
-}
-
-}
-
-
-/* ==================================
+/* =========================================================
    LOGOUT
-================================== */
+========================================================= */
 
 async function logout(){
 
-try{
+  if(!supabaseClient){
+    return;
+  }
+
+  try{
+
+    await supabaseClient.auth.signOut();
+
+    updateAccountUI();
+
+    showTab("live");
+
+  }catch(error){
+
+    console.error(
+      "Logout error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   REMINDER
+========================================================= */
+
+function reminder(){
+
+  alert(
+    "Reminder feature will be connected to match notifications."
+  );
+
+}
+
+
+/* =========================================================
+   FORMAT TIME
+========================================================= */
+
+function formatMatchTime(
+  dateString
+){
+
+  if(!dateString){
+    return "Scheduled";
+  }
+
+  const date =
+    new Date(
+      dateString
+    );
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+
+    return "Scheduled";
+
+  }
+
+  return date.toLocaleTimeString(
+    [],
+    {
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+function toggleDarkMode(){
+
+  const current =
+    localStorage.getItem(
+      "goalstream_theme"
+    );
+
+  if(current === "light"){
+
+    localStorage.setItem(
+      "goalstream_theme",
+      "dark"
+    );
+
+    applyDarkTheme();
+
+  }else{
+
+    localStorage.setItem(
+      "goalstream_theme",
+      "light"
+    );
+
+    applyLightTheme();
+
+  }
+
+}
+
+
+function applyDarkTheme(){
+
+  document.body.style.background =
+    "#07111f";
+
+}
+
+
+function applyLightTheme(){
+
+  document.body.style.background =
+    "#07111f";
+
+}
+
+
+/* =========================================================
+   MODAL CLICK OUTSIDE
+========================================================= */
+
+document
+  .getElementById("authModal")
+  .addEventListener(
+    "click",
+    function(event){
+
+      if(
+        event.target === this
+      ){
+
+        closeAuth();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById("playerModal")
+  .addEventListener(
+    "click",
+    function(event){
+
+      if(
+        event.target === this
+      ){
+
+        closePlayer();
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Escape"
+    ){
+
+      closeAuth();
+
+      closePlayer();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SUPABASE AUTH LISTENER
+========================================================= */
 
 if(supabaseClient){
 
-await supabaseClient.auth.signOut();
+  supabaseClient.auth.onAuthStateChange(
+    function(){
 
-}
+      updateAccountUI();
 
-}catch(error){
-
-console.error(
-"Logout error:",
-error
-);
-
-}
-
-
-updateAccount(null);
+    }
+  );
 
 }
 
 
-/* ==================================
-   AUTH SESSION
-================================== */
-
-async function initAuth(){
-
-if(!supabaseClient){
-
-updateAccount(null);
-
-return;
-
-}
-
-
-try{
-
-const sessionResult =
-await supabaseClient.auth.getSession();
-
-
-const session =
-sessionResult.data?.session;
-
-
-updateAccount(
-session?.user || null
-);
-
-
-supabaseClient.auth.onAuthStateChange(
-(_event,session)=>{
-
-updateAccount(
-session?.user || null
-);
-
-}
-);
-
-
-}catch(error){
-
-console.error(
-"Auth session error:",
-error
-);
-
-
-updateAccount(null);
-
-}
-
-}
-
-
-/* ==================================
-   HTML SAFETY
-================================== */
-
-function escapeHTML(value){
-
-return String(
-value ?? ""
-)
-.replace(
-/&/g,
-"&amp;"
-)
-.replace(
-/</g,
-"&lt;"
-)
-.replace(
-/>/g,
-"&gt;"
-)
-.replace(
-/"/g,
-"&quot;"
-)
-.replace(
-/'/g,
-"&#039;"
-);
-
-}
-
-
-function escapeAttribute(value){
-
-return String(
-value ?? ""
-)
-.replace(
-/\\/g,
-"\\\\"
-)
-.replace(
-/'/g,
-"\\'"
-)
-.replace(
-/"/g,
-"&quot;"
-)
-.replace(
-/</g,
-"&lt;"
-)
-.replace(
-/>/g,
-"&gt;"
-);
-
-}
-
-
-/* ==================================
+/* =========================================================
    START APP
-================================== */
+========================================================= */
 
-loadLiveMatches();
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
 
-initAuth();
+    updateAccountUI();
 
+    loadLiveMatches();
 
-/* ==================================
-   AUTO REFRESH LIVE SCORES
-================================== */
-
-setInterval(
-()=>{
-
-if(
-currentTab === "live" &&
-currentCat === "Football"
-){
-
-loadLiveMatches();
-
-}
-
-},
-30000
+  }
 );
 
 </script>
